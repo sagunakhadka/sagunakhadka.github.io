@@ -362,34 +362,6 @@ The corresponding links are configured directly in the contact section of `index
 
 ---
 
-## 🚀 Running Locally
-
-No build tools or frameworks are required.
-
-Simply clone or download the project and open:
-
-```text
-index.html
-```
-
-in any modern web browser.
-
-For a better local development experience, you can use a simple local server.
-
-For example:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open:
-
-```text
-http://localhost:8000
-```
-
----
-
 ## 🌐 Deployment
 
 Because this is a static HTML website, it can be deployed to almost any static hosting provider.
@@ -513,10 +485,3 @@ For professional opportunities related to IT, networking, cybersecurity, cloud, 
 📧 `khadkasagu@gmail.com`
 
 ---
-
-<p align="center">
-  Built with HTML, CSS & JavaScript.
-</p>
-```
-
-This README is ready to save as **`README.md`** alongside your `index.html`.
