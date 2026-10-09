@@ -63,6 +63,10 @@ h1{font-size:clamp(3rem,8.2vw,6.5rem);line-height:1.02}
 .marq span::after{content:"✦";margin-left:48px;color:var(--accent);font-style:normal;font-size:.8rem}
 @keyframes mq{to{transform:translateX(-50%)}}
 
+.lottie-band{padding:96px 0;text-align:center}
+.lottie-band .lot{width:min(360px,70vw);aspect-ratio:1;margin:0 auto}
+.lottie-band p{color:var(--muted);margin-top:8px}
+@media(max-width:760px){.lottie-band{padding:56px 0}}
 section{padding:120px 0}
 h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin-bottom:20px;max-width:700px}
 .sub{color:var(--muted);max-width:480px;margin-bottom:56px}
@@ -116,8 +120,10 @@ h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin-bottom:20px;max-width
 footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:12px}
 footer .wrap{display:flex;justify-content:space-between}
 
-.rv{opacity:0;transform:translateY(32px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
-.rv.in{opacity:1;transform:none}
+.rv{opacity:0;transform:translate3d(0,64px,0);filter:blur(6px);will-change:transform,opacity;transition:opacity 1.1s cubic-bezier(.16,.84,.24,1),transform 1.1s cubic-bezier(.16,.84,.24,1),filter 1.1s cubic-bezier(.16,.84,.24,1)}
+.rv.in{opacity:1;transform:none;filter:none}
+.rv.out{opacity:0;transform:translate3d(0,-44px,0);filter:blur(6px);transition-delay:0s!important}
+.hero-text,.orb{will-change:transform,opacity}
 .d1{transition-delay:.12s}.d2{transition-delay:.24s}
 
 @media(max-width:900px){.xp{grid-template-columns:40px 140px 1fr}}
@@ -146,7 +152,7 @@ footer .wrap{gap:14px;flex-wrap:wrap}
 @media(max-width:380px){.hero h1{font-size:2.3rem}.btns .btn{width:100%}}
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 img{max-width:100%}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.lead,.btns{opacity:1;transform:none}.ln>span{transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.rv.out,.lead,.btns{opacity:1;transform:none;filter:none}.hero-text,.orb{translate:none!important;opacity:1!important}.ln>span{transform:none}}
 </style>
 </head>
 <body>
@@ -239,10 +245,9 @@ img{max-width:100%}
 
 <section id="contact" class="contact" style="border-top:1px solid var(--line)"><div class="wrap">
   <div class="portrait rv">
-  <div class="photo">
-    <img src="https://raw.githubusercontent.com/sagunakhadka/sagunakhadka.github.io/refs/heads/main/saguna.png" alt="Portrait of Saguna Khadka"><b>S</b>
+    <!-- Add your photo: put your file name in src, e.g. src="saguna.jpg" -->
+    <div class="photo"><img alt="Portrait of Saguna Khadka" src="https://raw.githubusercontent.com/sagunakhadka/sagunakhadka.github.io/refs/heads/main/saguna.png"><b>S</b></div>
   </div>
-</div>
   <p class="lab rv">Contact · सम्पर्क</p>
   <h2 class="rv d1">Let's <em>talk.</em></h2>
   <p class="sub rv d2">Open to IT, networking and security opportunities.</p>
@@ -253,10 +258,11 @@ img{max-width:100%}
 <footer><div class="wrap"><span>&copy; <span id="yr"></span> Saguna Khadka</span><a href="#top">Back to top ↑</a></div></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <script>
 lucide.createIcons();
 document.getElementById('yr').textContent=new Date().getFullYear();
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+const io=new IntersectionObserver(es=>es.forEach(e=>{const t=e.target;if(e.isIntersecting){t.classList.add('in');t.classList.remove('out')}else{t.classList.remove('in');t.classList.toggle('out',e.boundingClientRect.top<0)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;co.unobserve(e.target);const n=+e.target.dataset.n,s=e.target.dataset.s||'';let t0;
 const step=t=>{t0=t0||t;const p=Math.min((t-t0)/1200,1);e.target.textContent=Math.round(n*(1-Math.pow(1-p,3)))+(p===1?s:'');if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}),{threshold:.6});
@@ -265,9 +271,20 @@ document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');i
 document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
 document.querySelectorAll('.card').forEach(c=>{const show=b.dataset.f==='all'||c.dataset.c===b.dataset.f;c.classList.toggle('off',!show);if(show){c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop')}})};
 const bar=document.getElementById('bar');
+const heroT=document.querySelector('.hero-text'),orb=document.querySelector('.orb');let tick=false;
+const drift=()=>{tick=false;const p=Math.min(Math.max(scrollY/innerHeight,0),1);
+if(heroT){heroT.style.translate='0 '+(-p*70)+'px';heroT.style.opacity=1-p*.9}
+if(orb)orb.style.translate='0 '+(p*120)+'px'};
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(drift)}},{passive:true});
 addEventListener('scroll',()=>{bar.style.transform='scaleX('+(scrollY/(document.documentElement.scrollHeight-innerHeight||1))+')'},{passive:true});
 const root=document.documentElement;
 document.getElementById('theme').onclick=()=>{const d=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;root.dataset.theme=d?'light':'dark'};
+const lot=document.getElementById('lottie');
+if(lot&&window.lottie&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+const FALLBACK={"v":"5.7.0","fr":30,"ip":0,"op":90,"w":400,"h":400,"nm":"calm pulse","ddd":0,"assets":[],"layers":[{"ddd":0,"ind":1,"ty":4,"nm":"core","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[200,200,0]},"a":{"a":0,"k":[0,0,0]},"s":{"a":1,"k":[{"t":0,"s":[92,92,100],"i":{"x":[0.4,0.4,0.4],"y":[1,1,1]},"o":{"x":[0.6,0.6,0.6],"y":[0,0,0]}},{"t":45,"s":[108,108,100],"i":{"x":[0.4,0.4,0.4],"y":[1,1,1]},"o":{"x":[0.6,0.6,0.6],"y":[0,0,0]}},{"t":90,"s":[92,92,100]}]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"el","p":{"a":0,"k":[0,0]},"s":{"a":0,"k":[90,90]},"d":1},{"ty":"fl","c":{"a":0,"k":[0.78,0.4,0.2,1]},"o":{"a":0,"k":100}},{"ty":"tr","p":{"a":0,"k":[0,0]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100}}],"nm":"core"}],"ip":0,"op":90,"st":0,"bm":0},{"ddd":0,"ind":2,"ty":4,"nm":"ring b","sr":1,"ks":{"o":{"a":1,"k":[{"t":0,"s":[35],"i":{"x":[0.4],"y":[1]},"o":{"x":[0.6],"y":[0]}},{"t":45,"s":[0],"i":{"x":[0.4],"y":[1]},"o":{"x":[0.6],"y":[0]}},{"t":46,"s":[70],"i":{"x":[0.4],"y":[1]},"o":{"x":[0.6],"y":[0]}},{"t":90,"s":[35]}]},"r":{"a":0,"k":0},"p":{"a":0,"k":[200,200,0]},"a":{"a":0,"k":[0,0,0]},"s":{"a":1,"k":[{"t":0,"s":[70,70,100],"i":{"x":[0.4,0.4,0.4],"y":[1,1,1]},"o":{"x":[0.6,0.6,0.6],"y":[0,0,0]}},{"t":45,"s":[100,100,100],"i":{"x":[0.4,0.4,0.4],"y":[1,1,1]},"o":{"x":[0.6,0.6,0.6],"y":[0,0,0]}},{"t":46,"s":[40,40,100],"i":{"x":[0.4,0.4,0.4],"y":[1,1,1]},"o":{"x":[0.6,0.6,0.6],"y":[0,0,0]}},{"t":90,"s":[70,70,100]}]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"el","p":{"a":0,"k":[0,0]},"s":{"a":0,"k":[300,300]},"d":1},{"ty":"st","c":{"a":0,"k":[0.78,0.4,0.2,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":3},"lc":2,"lj":2},{"ty":"tr","p":{"a":0,"k":[0,0]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100}}],"nm":"ring b"}],"ip":0,"op":90,"st":0,"bm":0},{"ddd":0,"ind":3,"ty":4,"nm":"ring a","sr":1,"ks":{"o":{"a":1,"k":[{"t":0,"s":[70],"i":{"x":[0.4],"y":[1]},"o":{"x":[0.6],"y":[0]}},{"t":90,"s":[0]}]},"r":{"a":0,"k":0},"p":{"a":0,"k":[200,200,0]},"a":{"a":0,"k":[0,0,0]},"s":{"a":1,"k":[{"t":0,"s":[40,40,100],"i":{"x":[0.4,0.4,0.4],"y":[1,1,1]},"o":{"x":[0.6,0.6,0.6],"y":[0,0,0]}},{"t":90,"s":[100,100,100]}]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"el","p":{"a":0,"k":[0,0]},"s":{"a":0,"k":[300,300]},"d":1},{"ty":"st","c":{"a":0,"k":[0.78,0.4,0.2,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":3},"lc":2,"lj":2},{"ty":"tr","p":{"a":0,"k":[0,0]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100}}],"nm":"ring a"}],"ip":0,"op":90,"st":0,"bm":0}]};
+const cfg={container:lot,renderer:'svg',loop:true,autoplay:false};
+const anim=lottie.loadAnimation(lot.dataset.src?{...cfg,path:lot.dataset.src}:{...cfg,animationData:FALLBACK});
+new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?anim.play():anim.pause())).observe(lot)}
 const ph=document.querySelector('.photo img');
 if(ph&&ph.getAttribute('src')){ph.nextElementSibling.style.display='none';ph.onerror=()=>{ph.removeAttribute('src');ph.nextElementSibling.style.display=''}}
 </script>
