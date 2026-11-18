@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mahabharat: The Great Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Literata:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--ink:#0d0d0f;--mute:#4f4f58;--line:rgba(13,13,15,.16);--glass:rgba(255,255,255,.55);--p1:#c8b6ff;--p2:#ffc7ae;--p3:#b9e0ff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e11;--ink:#f4f3ef;--mute:#9a9aa3;--line:rgba(255,255,255,.18);--glass:rgba(30,30,36,.55);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0e11;--ink:#f4f3ef;--mute:#9a9aa3;--line:rgba(255,255,255,.18);--glass:rgba(30,30,36,.55);color-scheme:dark}
+*{box-sizing:border-box}html{overflow-x:clip;max-width:100%;scroll-behavior:smooth;scroll-padding-top:80px}
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.75 Literata,Georgia,serif;overflow-x:clip;width:100%}
+.glass{background:var(--glass);border:1px solid var(--line);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
+nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:14px 18px}
+nav b{font:800 1.1rem 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em}
+nav div{display:flex;gap:4px;padding:5px;border-radius:999px}
+nav a{color:var(--ink);text-decoration:none;font-size:.88rem;padding:7px 14px;border-radius:999px}
+nav a:hover{background:var(--ink);color:var(--bg)}
+a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 22px 48px;max-width:1200px;margin:0 auto;overflow:hidden}
+.ball{position:absolute;right:-12%;top:12%;width:min(78vw,520px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0,transparent 32%),conic-gradient(from 200deg,var(--p1),var(--p3),var(--p2),var(--p1));filter:blur(2px);animation:float 9s ease-in-out infinite;z-index:-1;opacity:.9}
+@keyframes float{50%{transform:translate(-18px,22px) scale(1.04)}}
+h1{font:800 clamp(2.4rem,9vw,6.5rem)/1.05 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.025em;margin:0 0 28px}
+h1 span{position:relative;display:inline-block}
+h1 svg{position:absolute;left:0;bottom:-.12em;width:100%;height:.3em;fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
+.intro{max-width:32em;color:var(--mute);font-size:1.12rem;margin:0}
+.intro b{color:var(--ink);font-weight:500}
+.band{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:16px 0;margin:30px 0}
+.band div{display:inline-block;animation:run 32s linear infinite;font:700 clamp(1.1rem,3vw,1.6rem) 'Plus Jakarta Sans',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+@keyframes run{to{transform:translateX(-50%)}}
+section{max-width:1200px;margin:0 auto;padding:40px 18px 20px}
+h2.t{font:800 clamp(2rem,6vw,3.6rem)/1 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.03em;margin:0 0 20px}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:0 0 22px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;font:600 .92rem 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ep{border-top:1px solid var(--line)}.ep:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;padding:22px 0}
+summary::-webkit-details-marker{display:none}
+summary .n{font:500 .9rem Inter;color:var(--mute)}
+summary h3{font:700 clamp(1.25rem,4.2vw,2.2rem)/1.2 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.02em;margin:0;transition:transform .3s}
+@media (hover:hover){summary:hover h3{transform:translateX(8px)}}
+summary .tag{font-size:.78rem;padding:5px 12px;border-radius:999px;color:var(--mute);display:none}
+summary i{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-style:normal;transition:transform .25s}
+details[open] summary i{transform:rotate(45deg);background:var(--ink);color:var(--bg)}
+.body{padding:0 0 30px 0;display:grid;gap:18px}.body p{margin:0 0 .9em;max-width:60ch}
+.body em{font-style:normal;padding:18px 20px;border-radius:20px;background:linear-gradient(135deg,color-mix(in srgb,var(--p1) 55%,transparent),color-mix(in srgb,var(--p2) 55%,transparent));font-size:.98rem;align-self:start}
+.ideas{display:grid;gap:12px}
+.ideas div{padding:26px 22px;border-radius:26px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.ideas div:nth-child(1){background:var(--p1)}.ideas div:nth-child(2){background:var(--p3)}.ideas div:nth-child(3){background:var(--p2)}.ideas div:nth-child(4){background:var(--ink);color:var(--bg)}
+.ideas div:not(:nth-child(4)){color:#0d0d0f}
+.ideas h4{font:700 1.6rem/1.1 'Plus Jakarta Sans',system-ui,sans-serif;margin:0 0 10px}.ideas p{margin:0;font-size:1rem;max-width:30ch}
+.ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#0d0d0f;background:var(--p1)}
+.ep:nth-child(3n+2) .ico,.ep:nth-child(3n+2) .art{background:var(--p3)}.ep:nth-child(3n) .ico,.ep:nth-child(3n) .art{background:var(--p2)}
+.side{display:grid;gap:14px;align-self:start}.art{aspect-ratio:16/9;border-radius:26px;display:grid;place-items:center;color:#0d0d0f;background:var(--p1)}
+footer{max-width:1200px;margin:40px auto 0;padding:30px 18px 50px;border-top:1px solid var(--line);color:var(--mute);font-size:.9rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (min-width:760px){summary{grid-template-columns:48px 1fr auto auto;padding:30px 0}summary .tag{display:inline-block}.body{grid-template-columns:1.5fr 1fr;padding-left:calc(48px + 14px)}.ideas{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:759px){nav{padding:10px 14px}nav a{padding:11px 14px}.hero{padding:92px 18px 34px;min-height:90svh}.ball{right:-32%;top:7%;width:96vw}.intro{font-size:1.05rem}.band{margin:22px 0}section{padding:30px 16px 10px}h2.t{margin-bottom:16px}.filters{margin:0 -16px;padding:0 16px 18px}.filters button{padding:12px 18px}summary{gap:12px;padding:16px 0}summary i{width:40px;height:40px}.body{gap:16px;padding-bottom:24px}.body em{padding:16px}.art{aspect-ratio:16/8}.ideas div{min-height:120px;padding:22px 20px}footer{flex-direction:column;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:360px){body{font-size:17px}h1{font-size:2.15rem}summary h3{font-size:1.12rem}summary{grid-template-columns:44px 1fr auto}.ico{width:44px;height:44px}nav b{font-size:1rem}}
+@media (min-width:760px) and (max-width:1023px){:root{--px:32px}.ball{width:min(60vw,460px)}}
+nav,.hero,section,footer{padding-left:max(var(--px,16px),env(safe-area-inset-left,0px));padding-right:max(var(--px,16px),env(safe-area-inset-right,0px))}
+.hero{overflow:clip}.body>*,summary>*,.side,.ideas>*{min-width:0}.art svg{max-width:100%}.band div{max-width:none}
+@media (orientation:landscape) and (max-height:520px){.hero{min-height:auto;padding-top:76px;padding-bottom:28px}.ball{width:min(44vw,280px);top:4%;right:-4%}h1{font-size:clamp(2rem,7vw,4rem)}nav{position:absolute}summary{padding:16px 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav><b>Mahabharat</b><div class="glass"><a href="#story">Story</a><a href="#ideas">Ideas</a></div></nav>
+<div class="hero">
+<div class="ball" aria-hidden="true"></div>
+<h1>At the heart of the epic is a question of <span>dharma<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 8c40-7 90-7 194-2"/></svg></span>.</h1>
+<p class="intro"><b>A royal family splits, a war ends an age.</b> Follow the story of the Kurus in fifteen chapters, from Bhishma’s vow to the walk to the Himalayas.</p>
+</div>
+<div class="band" aria-hidden="true"><div>The great story of the Kuru dynasty &nbsp;&bull;&nbsp; 18 books &nbsp;&bull;&nbsp; 18 days of war &nbsp;&bull;&nbsp; 100,000 verses &nbsp;&bull;&nbsp; The great story of the Kuru dynasty &nbsp;&bull;&nbsp; 18 books &nbsp;&bull;&nbsp; 18 days of war &nbsp;&bull;&nbsp; 100,000 verses &nbsp;&bull;&nbsp;</div></div>
+<section id="story">
+<h2 class="t">The story</h2>
+<div class="filters" id="f"></div>
+<div id="tl"></div>
+</section>
+<section id="ideas">
+<h2 class="t">What the epic keeps asking</h2>
+<div class="ideas">
+<div><h4>Duty or attachment</h4><p>Arjuna drops his bow, and Krishna answers with the Gita.</p></div>
+<div><h4>Promises bind</h4><p>Bhishma’s vow and Karna’s loyalty shape every choice they make.</p></div>
+<div><h4>No one stays clean</h4><p>Both sides break the rules of war before the last day.</p></div>
+<div><h4>Silence is a choice</h4><p>In the dice hall, the elders say nothing, and a kingdom follows.</p></div>
+</div>
+</section>
+<footer><span>A retelling of the main storyline. Regional versions of the epic differ in details.</span><span>Mahabharat</span></footer>
+<script>
+const E=[
+["Shantanu, Ganga and Bhishma","The roots","King Shantanu of Hastinapur marries the river goddess Ganga on one condition: he must never question her. She drowns their first seven sons, freeing them from a curse. When he finally protests at the eighth, she leaves and takes the boy, who returns years later as Devavrata.<br><br>Shantanu later falls in love with Satyavati, a fisherman’s daughter, whose father demands that her children inherit the throne. To end his father’s sorrow, Devavrata gives up the crown and swears lifelong celibacy. The gods name him Bhishma, the one of terrible vow.","His vow secures the throne for Satyavati’s line and ties his fate to Hastinapur for life."],
+["Vyasa and the Two Royal Lines","The roots","Satyavati’s sons die young and childless. Following custom, her first son, the sage Vyasa, fathers heirs with the widowed queens. Ambika shuts her eyes in fear and bears the blind Dhritarashtra. Ambalika turns pale and bears Pandu. A maid, calm throughout, bears the wise Vidura.<br><br>Pandu is crowned because Dhritarashtra is blind. Dhritarashtra marries Gandhari, who blindfolds herself for life in solidarity.","The blindness of one brother and the crown of the other sets up the rivalry of the next generation."],
+["Birth of the Pandavas and Kauravas","The two families","Pandu is cursed to die if he embraces his wife. Kunti uses a boon to call the gods: Dharma gives Yudhishthira, Vayu gives Bhima, Indra gives Arjuna. Madri calls the Ashvins and bears the twins Nakula and Sahadeva. Before her marriage, Kunti had called Surya in curiosity and secretly bore Karna, whom she abandoned in a basket on the river.<br><br>Karna is raised by a charioteer. Meanwhile Gandhari bears a lump of flesh that Vyasa divides into one hundred sons and a daughter. The eldest is Duryodhana. After Pandu dies, the five brothers grow up in Hastinapur beside their cousins.","Karna’s hidden birth is the epic’s deepest tragedy: a brother fighting brothers."],
+["Drona, Ekalavya and the Tournament","Youth","The teacher Drona trains all the princes. Arjuna becomes his favourite and is promised he will be the greatest archer. Ekalavya, a tribal boy refused as a student, learns alone before a clay image of Drona. When Drona sees his skill, he demands the boy’s right thumb as his fee. Ekalavya gives it.<br><br>At the graduation tournament, Karna enters and matches Arjuna. The Kuru elders mock him as a charioteer’s son, and Duryodhana crowns him king of Anga on the spot. Karna’s loyalty to Duryodhana begins that day.","A friendship born of an insult binds Karna to the wrong side for life."],
+["The House of Lac and Draupadi","Exile and marriage","Duryodhana plots to burn the Pandavas alive in a palace built from lac. Vidura sends a warning and a secret tunnel. The five escape with Kunti and live in disguise as Brahmins. A hunter woman and her five sons, who die in the fire, make the Kauravas think the Pandavas are dead.<br><br>In Panchala, King Drupada holds a contest for his daughter Draupadi: string a giant bow and hit a moving target. Karna is rejected for his birth. Arjuna succeeds in disguise. Kunti, not seeing what he won, tells her sons to share it equally, and Draupadi becomes the wife of all five.","Their identity revealed, the Pandavas gain a powerful ally in Drupada and a new bond with Krishna."],
+["Indraprastha and the Rajasuya","The rise","Dhritarashtra splits the kingdom. The Pandavas receive barren land, which they turn into the glittering city of Indraprastha with Krishna’s help. Arjuna wins the Gandiva bow and marries Subhadra, Krishna’s sister.<br><br>Yudhishthira performs the Rajasuya sacrifice, declaring himself emperor. When Krishna is honoured first, Shishupala hurls insults until Krishna ends him with his discus after a hundred pardoned offences. Duryodhana, visiting the hall of illusions, mistakes floor for water and water for floor, and the court laughs.","Humiliation and envy turn Duryodhana from rival to enemy."],
+["The Dice Game","The fall","Duryodhana and his uncle Shakuni, a master of loaded dice, invite Yudhishthira to a game. Yudhishthira, who cannot refuse a challenge, loses his wealth, his kingdom, his brothers, himself, and finally Draupadi.<br><br>Duryodhana’s brother Dushasana drags Draupadi into the hall by her hair and tries to strip her before the court. She asks the elders whether a man who lost himself could stake her. No one answers. Her cloth is said to grow endlessly through Krishna’s grace. Bhima vows to break Duryodhana’s thigh and drink Dushasana’s blood. Dhritarashtra restores their freedom, but a second game sends them into exile.","The silence of the elders in this hall is the epic’s central question about justice."],
+["Thirteen Years of Exile","Exile","The Pandavas spend twelve years in the forest. Arjuna earns divine weapons from the gods and Shiva. Bhima meets his brother Hanuman. Yudhishthira, at a lake, is questioned by a yaksha who has killed his brothers. His answers on life, grief and duty satisfy the spirit, who revives them all.<br><br>The thirteenth year must be lived unrecognised. At the court of King Virata, Yudhishthira serves as a courtier, Bhima as a cook, Arjuna as the dance teacher Brihannala, the twins as stable hands, and Draupadi as a maid. When Kichaka assaults her, Bhima kills him in secret. They reveal themselves only when Arjuna defeats the Kaurava army alone.","The terms of exile are met, and the Pandavas ask for their kingdom back."],
+["The Failed Peace","Before the war","Krishna goes to Hastinapur as envoy. The Pandavas ask for only five villages. Duryodhana refuses even the land that a needle’s point could cover and tries to take Krishna prisoner. Krishna shows his cosmic form in the hall and leaves.<br><br>Kunti meets Karna and reveals he is her firstborn, begging him to join the Pandavas. He refuses to abandon Duryodhana but promises not to kill any brother except Arjuna. Armies gather from across the land. Krishna offers each side a choice: his army or himself unarmed. Duryodhana takes the army. Arjuna chooses Krishna and asks him to drive his chariot.","War is now certain, and both sides have chosen their allies."],
+["Kurukshetra and the Gita","The war","On the plain of Kurukshetra, Arjuna sees teachers, cousins and elders on the opposing side and drops his bow in despair. Krishna answers with the Bhagavad Gita: act without clinging to results, do one’s duty, and know the self as eternal. He shows Arjuna his universal form. Arjuna rises and fights.<br><br>This conversation, held in the moments before the battle begins, becomes one of the most studied texts in Indian thought.","Duty versus attachment is the question the whole epic keeps asking."],
+["Bhishma on the Bed of Arrows","Days 1 to 10","Bhishma leads the Kauravas as commander for ten days, and no one can defeat him. He has vowed not to fight Shikhandi, who was Amba in a past life and was wronged by him. Arjuna stands behind Shikhandi and pierces Bhishma with arrows until he falls, held above the ground by the shafts.<br><br>With his boon to choose the hour of death, he waits on the arrows for the sun’s northward turn and later teaches Yudhishthira about law and governance.","The grandsire’s fall marks the loss of the Kuru elders."],
+["Drona and the Death of Abhimanyu","Days 11 to 15","Drona takes command. On day thirteen, the Kauravas form the impenetrable chakravyuha. Arjuna’s sixteen-year-old son Abhimanyu knows how to enter but not how to leave. He breaks in, kills many warriors, and is then surrounded and killed by six warriors acting against the rules of war.<br><br>The next day Arjuna avenges him by killing Jayadratha at sunset. On day fifteen, the Pandavas spread the rumour that “Ashwatthama is dead,” naming an elephant of that name. Drona, believing his son dead, puts down his weapons and is killed by Dhrishtadyumna.","Rules of war break down, and neither side stays clean."],
+["Karna’s Fall","Days 16 and 17","Karna becomes commander. He has a divine spear he saved for Arjuna but must use it on Ghatotkacha, Bhima’s son, who wrecks the Kaurava army at night. In the duel with Arjuna, Karna’s chariot wheel sinks into the earth, a result of a curse. He steps down to lift it and appeals to the law of war.<br><br>Krishna reminds him of the dice hall, of Draupadi, and of Abhimanyu. Arjuna looses the arrow, and Karna dies. Kunti’s grief is silent: she can’t mourn her eldest in public.","The most generous warrior falls to a chain of curses and choices."],
+["The Last Day and the Night Raid","Days 18 and after","Shalya commands briefly before falling to Yudhishthira. Duryodhana hides in a lake, is challenged by Bhima, and in a mace duel is struck on the thigh, a blow against the rules, as Bhima had vowed. He dies slowly.<br><br>That night, Drona’s son Ashwatthama enters the Pandava camp and slaughters the sleeping warriors, including Draupadi’s five sons. He then launches a divine weapon at the womb of Uttara, Abhimanyu’s widow. Krishna saves the unborn child, Parikshit, and curses Ashwatthama to wander in pain.","Victory has left five brothers alive and almost everyone else gone."],
+["Grief, Kingship and the Journey Home","Aftermath","Gandhari curses Krishna that his own clan will destroy itself. Yudhishthira is crowned and rules with deep guilt, while Bhishma’s final teachings guide him. Thirty-six years later, the Yadava clan kills itself in a drunken brawl, and Krishna dies by a hunter’s arrow.<br><br>The Pandavas hand the kingdom to Parikshit and walk toward the Himalayas with a dog. One by one, Draupadi and four brothers fall. Yudhishthira alone continues. He refuses to enter heaven without the loyal dog, who is revealed as Dharma. In heaven he first sees his cousins and then learns the world’s true order.","The epic ends not in triumph but in a question: what is dharma?"]
+];
+const P={crown:'<path d="M8 34h32l3-18-10 8-9-12-9 12-10-8z"/><path d="M8 40h32"/>',bow:'<path d="M14 6c18 6 18 30 0 36M14 6v36M14 24h26M35 19l5 5-5 5"/>',dice:'<rect x="8" y="8" width="32" height="32" rx="7"/><circle cx="18" cy="18" r="1.6"/><circle cx="30" cy="30" r="1.6"/><circle cx="24" cy="24" r="1.6"/><circle cx="30" cy="18" r="1.6"/><circle cx="18" cy="30" r="1.6"/>',wheel:'<circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="4"/><path d="M24 8v12M24 28v12M8 24h12M28 24h12M13 13l8 8M27 27l8 8M35 13l-8 8M21 27l-8 8"/>',conch:'<path d="M10 30c0-12 10-20 24-20 0 14-8 24-20 24-3 0-4-2-4-4zM20 28c4-2 8-6 10-12"/>',flame:'<path d="M24 6c4 8 12 12 12 22a12 12 0 01-24 0c0-6 4-8 6-12 2 4 4 4 6-10z"/>',sun:'<circle cx="24" cy="24" r="8"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M38 10l-4 4M14 34l-4 4"/>',mountain:'<path d="M4 40l14-22 8 12 6-8 12 18z"/>'};
+const M=['crown','conch','sun','bow','flame','crown','dice','mountain','conch','wheel','bow','wheel','sun','flame','mountain'];
+const I=(i,z)=>`<svg viewBox="0 0 48 48" width="${z}" height="${z}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[M[i]]}</svg>`;
+const G=i=>i<=3?'Origins':i<=8?'Rise and fall':i<=13?'The war':'Aftermath';
+const tl=document.getElementById('tl'),f=document.getElementById('f');
+E.forEach((e,i)=>tl.insertAdjacentHTML('beforeend',`<details class="ep" data-g="${G(i)}"><summary><span class="ico">${I(i,26)}</span><h3>${e[0]}</h3><span class="tag glass">${G(i)}</span><i aria-hidden="true">+</i></summary><div class="body"><div><p>${e[2]}</p></div><div class="side"><div class="art">${I(i,84)}</div><em>${e[3]}</em></div></div></details>`));
+['All','Origins','Rise and fall','The war','Aftermath'].forEach((g,k)=>{const b=document.createElement('button');b.className='glass';b.textContent=g;b.setAttribute('aria-pressed',k==0);b.onclick=()=>{[...f.children].forEach(x=>x.setAttribute('aria-pressed',x===b));document.querySelectorAll('.ep').forEach(d=>d.hidden=g!='All'&&d.dataset.g!=g)};f.appendChild(b)});
+document.querySelector('.ep').open=true;
+</script>
+</body>
+</html>
