@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Gita | Bhagavad Gita Chapters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#0a0306; --bg-2:#240a10;
+  --gold:#f2c14e; --gold-soft:#f2c14e44;
+  --red:#c8283a; --red-deep:#8e1626;
+  --text:#ffffff; --muted:rgba(255,255,255,.78); --dim:rgba(255,255,255,.6);
+  --glass:rgba(255,255,255,.06);
+  --glass-strong:rgba(255,255,255,.10);
+  --stroke:rgba(255,226,190,.16);
+  --radius:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-text-size-adjust:100%}
+body{overscroll-behavior:none}
+button{-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Inter',system-ui,sans-serif;color:var(--text);
+  background:radial-gradient(120% 90% at 50% 0%,var(--bg-2),var(--bg-1) 70%);
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+.serif{font-family:'Playfair Display',Georgia,serif}
+
+/* ---------- Aurora background ---------- */
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
+.orb.a{width:46vmax;height:46vmax;background:var(--red);top:-16vmax;left:-12vmax;animation:drift1 26s ease-in-out infinite alternate}
+.orb.b{width:38vmax;height:38vmax;background:var(--gold);opacity:.30;bottom:-14vmax;right:-8vmax;animation:drift2 30s ease-in-out infinite alternate}
+.orb.c{width:30vmax;height:30vmax;background:var(--red-deep);opacity:.45;top:35%;left:42%;animation:drift3 34s ease-in-out infinite alternate}
+.orb.d{width:22vmax;height:22vmax;background:var(--gold);opacity:.14;bottom:8%;left:6%;animation:drift2 38s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate(14vmax,10vmax) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-12vmax,-8vmax) scale(1.1)}}
+@keyframes drift3{to{transform:translate(-10vmax,8vmax) scale(.9)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+
+/* ---------- Home screen ---------- */
+.home{position:fixed;inset:0;z-index:10;display:flex;overflow-y:auto;padding:24px;
+  transition:opacity .6s ease,transform .6s ease,visibility .6s}
+.home.hide{opacity:0;transform:scale(1.04);visibility:hidden;pointer-events:none}
+.cover{position:relative;margin:auto;width:min(560px,100%);padding:48px 40px 40px;text-align:center;overflow:hidden;
+  animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.cover::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(420px 260px at 50% 0%,rgba(242,193,78,.20),transparent 70%)}
+.mandala{width:132px;height:132px;margin:0 auto 26px;position:relative;color:var(--gold)}
+.mandala svg{width:100%;height:100%;overflow:visible}
+.mandala .spin{transform-origin:50% 50%;animation:spin 40s linear infinite}
+.mandala .spin.rev{animation-duration:60s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mandala::after{content:"";position:absolute;inset:22%;border-radius:50%;
+  background:radial-gradient(circle,rgba(242,193,78,.55),rgba(200,40,58,.25) 60%,transparent 72%);filter:blur(10px);z-index:-1}
+.home .eyebrow{display:block}
+.home h1{font-size:clamp(44px,9vw,68px);line-height:1;margin:14px 0 10px;font-weight:600;
+  color:#fff;text-shadow:0 2px 30px rgba(242,193,78,.35)}
+.sanskrit{font-family:'Noto Serif Devanagari','Playfair Display',serif;font-size:22px;color:#fff;letter-spacing:.04em;opacity:.95}
+.tagline{margin:22px auto 0;max-width:38ch;font-size:15px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.88)}
+.stats{display:flex;justify-content:center;gap:12px;margin:28px 0 30px;flex-wrap:wrap}
+.stat{padding:12px 20px;border-radius:16px;background:var(--glass);border:1px solid var(--stroke);min-width:104px}
+.stat b{display:block;font-family:'Playfair Display',serif;font-size:24px;color:#fff;font-weight:600}
+.stat span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.cta{display:inline-flex;align-items:center;gap:12px;padding:16px 30px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,230,190,.45);
+  font:inherit;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#2a0a0f;
+  background:linear-gradient(135deg,#f7d57a,#f2c14e 45%,#e0784a);
+  box-shadow:0 14px 34px -10px rgba(242,193,78,.6),0 0 0 6px rgba(200,40,58,.12),inset 0 1px 0 rgba(255,255,255,.6);
+  transition:transform .25s,box-shadow .25s}
+.cta:hover{transform:translateY(-3px);box-shadow:0 20px 40px -10px rgba(242,193,78,.7),0 0 0 8px rgba(200,40,58,.18),inset 0 1px 0 rgba(255,255,255,.6)}
+.cta:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.cta svg{width:18px;height:18px;transition:transform .25s}
+.cta:hover svg{transform:translateX(4px)}
+.hint{margin-top:18px;font-size:12px;color:rgba(255,255,255,.7)}
+.brand{cursor:pointer}
+.brand:hover h1{filter:brightness(1.15)}
+@media (max-width:820px){.cover{padding:40px 24px 32px}}
+@media (prefers-reduced-motion:reduce){.mandala .spin{animation:none}}
+
+/* ---------- Shell ---------- */
+.app{position:relative;z-index:2;height:100vh;height:100dvh;display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:20px;padding:24px;max-width:1280px;margin:0 auto}
+.glass{
+  background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.03));
+  backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
+  border:1px solid var(--stroke);border-radius:var(--radius);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.02);
+}
+
+/* ---------- Sidebar ---------- */
+.side{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.brand{padding:28px 26px 18px}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.brand h1{font-size:34px;line-height:1.1;margin-top:8px;font-weight:600;
+  background:linear-gradient(180deg,#fff7e8,#f2c14e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.search{margin:6px 18px 12px;position:relative}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--dim)}
+.search input{
+  width:100%;padding:12px 14px 12px 40px;border-radius:14px;border:1px solid var(--stroke);
+  background:rgba(255,255,255,.05);color:var(--text);font:inherit;font-size:14px;outline:none;
+  transition:border-color .25s,background .25s,box-shadow .25s}
+.search input{color:#fff;-webkit-appearance:none;appearance:none;caret-color:var(--gold)}
+.search input::placeholder{color:rgba(255,255,255,.65);opacity:1}
+.search input::-webkit-search-cancel-button{filter:invert(1);opacity:.7}
+.search svg{color:rgba(255,255,255,.7)}
+.search input:focus{border-color:var(--gold-soft);background:rgba(255,255,255,.08);box-shadow:0 0 0 4px rgba(242,193,78,.08)}
+.list{list-style:none;overflow-y:auto;padding:4px 12px 18px;flex:1;min-height:0}
+.item{
+  display:flex;gap:14px;align-items:center;padding:12px 14px;margin-bottom:6px;border-radius:18px;cursor:pointer;
+  border:1px solid transparent;transition:background .25s,border-color .25s,transform .25s}
+.item:hover{background:var(--glass);transform:translateX(3px)}
+.item:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.item.active{background:linear-gradient(120deg,rgba(242,193,78,.16),rgba(200,40,58,.18));border-color:rgba(242,193,78,.35);
+  box-shadow:0 10px 30px -12px rgba(242,193,78,.35)}
+.num{flex:none;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:14px;font-weight:600;
+  color:var(--gold);background:rgba(242,193,78,.08);border:1px solid rgba(242,193,78,.22)}
+.item.active .num{background:var(--gold);color:#1b1405;border-color:transparent}
+.item h3{font-size:15px;font-weight:500;line-height:1.25}
+.item p{font-size:12px;color:var(--muted);margin-top:2px}
+.empty{padding:24px;text-align:center;color:var(--dim);font-size:14px}
+
+/* ---------- Detail ---------- */
+.main{display:flex;flex-direction:column;min-height:0;position:relative;overflow:hidden}
+.main::before{ /* soft inner highlight */
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(600px 300px at 85% -10%,rgba(200,40,58,.20),transparent 70%)}
+.scroll{flex:1;overflow-y:auto;padding:44px clamp(24px,5vw,64px) 24px;min-height:0;position:relative}
+.big-num{position:absolute;right:clamp(16px,4vw,48px);top:6px;font-size:clamp(120px,18vw,220px);line-height:1;font-weight:700;
+  color:transparent;-webkit-text-stroke:1px rgba(242,193,78,.22);pointer-events:none;user-select:none}
+.content{position:relative;transition:opacity .35s ease,transform .35s ease}
+.content.out{opacity:0;transform:translateY(10px)}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);background:rgba(242,193,78,.1);border:1px solid rgba(242,193,78,.3)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.title{font-size:clamp(34px,5vw,58px);line-height:1.05;font-weight:600;margin:22px 0 10px;max-width:14ch;
+  background:linear-gradient(180deg,#fff7e8 30%,#f2c14e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{font-size:clamp(18px,2.2vw,24px);font-style:italic;color:var(--gold);opacity:.95}
+.divider{height:1px;margin:28px 0;background:linear-gradient(90deg,var(--stroke),transparent)}
+.label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
+.summary{font-size:clamp(16px,1.5vw,19px);line-height:1.75;font-weight:300;color:rgba(255,255,255,.92);max-width:62ch}
+.insight{
+  margin-top:30px;padding:28px 30px;border-radius:22px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(200,40,58,.24),rgba(242,193,78,.08));
+  border:1px solid rgba(232,110,100,.32);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.insight::after{content:"\201C";position:absolute;right:18px;top:-18px;font-family:'Playfair Display',serif;font-size:140px;color:rgba(255,255,255,.07);line-height:1}
+.insight .label{color:#ffb4a8;display:flex;align-items:center;gap:10px}
+.insight .label::before{content:"";width:18px;height:1px;background:#ffb4a8}
+.insight p{font-size:clamp(16px,1.5vw,19px);line-height:1.7;font-style:italic;color:#fff;position:relative;z-index:1}
+
+/* ---------- Footer nav ---------- */
+.foot{padding:16px clamp(24px,5vw,64px) 22px;display:flex;align-items:center;gap:18px;border-top:1px solid var(--stroke);
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.15))}
+.progress{flex:1;min-width:0}
+.progress .row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.bar{height:4px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
+.bar span{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--gold),var(--red));
+  box-shadow:0 0 12px rgba(242,193,78,.5);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.nav{display:flex;gap:10px}
+.btn{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;cursor:pointer;color:var(--text);
+  background:var(--glass-strong);border:1px solid var(--stroke);transition:transform .2s,background .2s,opacity .2s,border-color .2s}
+.btn:hover:not(:disabled){background:rgba(242,193,78,.16);border-color:rgba(242,193,78,.4);transform:translateY(-2px)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn svg{width:20px;height:20px}
+.back{display:none;align-items:center;gap:8px;margin-bottom:22px;padding:9px 14px 9px 10px;border-radius:999px;cursor:pointer;
+  font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--gold);
+  background:rgba(242,193,78,.08);border:1px solid rgba(242,193,78,.25)}
+.back svg{width:16px;height:16px}
+
+/* scrollbars */
+.list::-webkit-scrollbar,.scroll::-webkit-scrollbar{width:6px}
+.list::-webkit-scrollbar-thumb,.scroll::-webkit-scrollbar-thumb{background:rgba(242,193,78,.22);border-radius:10px}
+.list::-webkit-scrollbar-thumb:hover,.scroll::-webkit-scrollbar-thumb:hover{background:rgba(242,193,78,.4)}
+
+/* ---------- Mobile ---------- */
+@media (max-width:820px){
+  body{overflow:hidden}
+  .app{display:block;padding:12px;position:relative}
+  .side,.main{height:100%}
+  .app:not(.reading) .main{display:none}
+  .app.reading .side{display:none}
+  .back{display:inline-flex}
+  .big-num{font-size:120px;top:60px;opacity:.8}
+  .scroll{padding-top:24px}
+  .foot{padding-bottom:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  .orb{animation:none}
+  *{transition-duration:.01ms!important}
+}
+
+/* ---------- Mobile polish ---------- */
+@media (max-width:820px){
+  .home{padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom))}
+  .app{padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom))}
+  :root{--radius:24px}
+  .brand{padding:24px 20px 14px}
+  .brand h1{font-size:30px}
+  .search{margin:4px 14px 10px}
+  .search input{font-size:16px;padding:13px 14px 13px 40px} /* 16px prevents iOS zoom */
+  .list{padding:4px 10px 14px}
+  .item{padding:12px;gap:12px}
+  .item:hover{transform:none}
+  .scroll{padding:20px 20px 16px}
+  .big-num{font-size:110px;right:12px;top:54px;opacity:.7}
+  .title{max-width:none;margin:18px 0 8px;font-size:clamp(30px,9vw,42px)}
+  .subtitle{font-size:18px}
+  .divider{margin:22px 0}
+  .summary{font-size:16px;line-height:1.7}
+  .insight{padding:22px 20px;margin-top:24px;border-radius:20px}
+  .insight p{font-size:16px}
+  .foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom));gap:14px}
+  .btn{width:48px;height:48px}
+  .back{margin-bottom:16px;padding:11px 16px 11px 12px}
+}
+@media (max-width:480px){
+  .cover{padding:32px 20px 26px;border-radius:24px}
+  .mandala{width:104px;height:104px;margin-bottom:20px}
+  .home h1{font-size:42px}
+  .sanskrit{font-size:19px}
+  .tagline{font-size:14px;margin-top:18px}
+  .stats{gap:10px;margin:22px 0 24px}
+  .stat{min-width:0;flex:1;padding:10px 12px}
+  .stat b{font-size:22px}
+  .stat span{font-size:10px;letter-spacing:.14em}
+  .cta{width:100%;justify-content:center;padding:17px 20px}
+  .hint{display:none}
+  .eyebrow{font-size:10px;letter-spacing:.26em}
+}
+@media (max-width:360px){
+  .brand h1{font-size:26px}
+  .big-num{display:none}
+  .plabel{font-size:11px}
+}
+@media (max-height:600px) and (orientation:landscape){
+  .mandala{display:none}
+  .cover{padding:24px 28px}
+  .stats{margin:16px 0}
+}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true">
+  <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div><div class="orb d"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+
+<!-- Home screen -->
+<div class="home" id="home">
+  <div class="glass cover">
+    <div class="mandala" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1">
+        <g class="spin">
+          <circle cx="60" cy="60" r="56" stroke-opacity=".5"/>
+          <g stroke-opacity=".8">
+            <path id="petal" d="M60 4 C68 20 68 34 60 44 C52 34 52 20 60 4Z"/>
+            <use href="#petal" transform="rotate(30 60 60)"/><use href="#petal" transform="rotate(60 60 60)"/>
+            <use href="#petal" transform="rotate(90 60 60)"/><use href="#petal" transform="rotate(120 60 60)"/>
+            <use href="#petal" transform="rotate(150 60 60)"/><use href="#petal" transform="rotate(180 60 60)"/>
+            <use href="#petal" transform="rotate(210 60 60)"/><use href="#petal" transform="rotate(240 60 60)"/>
+            <use href="#petal" transform="rotate(270 60 60)"/><use href="#petal" transform="rotate(300 60 60)"/>
+            <use href="#petal" transform="rotate(330 60 60)"/>
+          </g>
+        </g>
+        <g class="spin rev" stroke="#e0584a">
+          <circle cx="60" cy="60" r="34" stroke-opacity=".7"/>
+          <path d="M60 26 94 60 60 94 26 60Z" stroke-opacity=".6"/>
+          <path d="M36 36 84 36 84 84 36 84Z" stroke-opacity=".35"/>
+        </g>
+        <circle cx="60" cy="60" r="7" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <span class="eyebrow">The Divine Song</span>
+    <h1 class="serif">Bhagavad Gita</h1>
+    <div class="sanskrit">श्रीमद्भगवद्गीता</div>
+    <p class="tagline">A timeless dialogue between Arjuna and Krishna on duty, action and the nature of the self, explored chapter by chapter.</p>
+    <div class="stats">
+      <div class="stat"><b>18</b><span>Chapters</span></div>
+      <div class="stat"><b>700</b><span>Verses</span></div>
+    </div>
+    <button class="cta" id="begin" type="button">Begin Reading
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <p class="hint">Tip: use the arrow keys to move between chapters</p>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <!-- Sidebar -->
+  <aside class="glass side">
+    <div class="brand">
+      <p class="eyebrow">The Divine Song</p>
+      <h1 class="serif">Bhagavad Gita</h1>
+    </div>
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Search chapters" autocomplete="off" aria-label="Search chapters">
+    </label>
+    <ul class="list" id="list" role="list"></ul>
+  </aside>
+
+  <!-- Detail -->
+  <section class="glass main" aria-live="polite">
+    <div class="scroll" id="scroll">
+      <button class="back" id="back" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+        Index
+      </button>
+      <div class="big-num serif" id="bignum" aria-hidden="true"></div>
+      <div class="content" id="content"></div>
+    </div>
+    <div class="foot">
+      <div class="progress">
+        <div class="row"><span id="plabel"></span><span id="ppct"></span></div>
+        <div class="bar"><span id="pbar"></span></div>
+      </div>
+      <div class="nav">
+        <button class="btn" id="prev" type="button" aria-label="Previous chapter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="btn" id="next" type="button" aria-label="Next chapter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const chapters = [
+            { no: 1, title: "Arjuna Vishada Yoga", subtitle: "The Moral Crisis", summary: "Arjuna is overwhelmed by grief and moral dilemma on the battlefield. Upon seeing his friends and relatives arrayed for battle, his resolve wavers, and he refuses to fight.", interpretation: "Represents the human struggle with duty, attachment, and the necessity of facing one's inner battles rather than fleeing them. It validates the psychological paralysis that often precedes profound spiritual awakening." },
+            { no: 2, title: "Sankhya Yoga", subtitle: "Transcendental Knowledge", summary: "Krishna introduces the eternal nature of the soul and the concept of selfless action. He explains that the physical body is temporary, but the indwelling soul is indestructible.", interpretation: "True wisdom lies in knowing the imperishable self and performing duties without attachment to temporary results. It sets the philosophical foundation for all subsequent teachings." },
+            { no: 3, title: "Karma Yoga", subtitle: "Path of Action", summary: "Emphasizes that action is inescapable. Krishna explains that one cannot attain freedom merely by renouncing action, but by performing one's prescribed duties without selfish attachment.", interpretation: "Dedicating one's work to the greater good transforms mundane action into an elevated spiritual practice. It bridges the gap between active worldly life and spiritual pursuit." },
+            { no: 4, title: "Jnana Yoga", subtitle: "Knowledge & Sacrifice", summary: "Details the history of the spiritual knowledge, divine incarnations, and the purification of action through wisdom. Krishna explains how spiritual knowledge acts as a fire that burns karma.", interpretation: "Experiential knowledge burns away the bondage of accumulated karma. Recognizing the divine descent into human affairs offers reassurance of cosmic order and justice." },
+            { no: 5, title: "Karma Sannyasa Yoga", subtitle: "Renunciation of Action", summary: "Compares the path of action with the path of renunciation. Krishna asserts that while both lead to the same goal, performing action without attachment is superior and more practical.", interpretation: "True renunciation is internal detachment while remaining fully engaged in the world, not abandoning life's responsibilities. It reframes 'letting go' as a mental state rather than physical withdrawal." },
+            { no: 6, title: "Dhyana Yoga", subtitle: "Meditation", summary: "Focuses on the mechanics of mind control and the practice of meditation. It outlines the lifestyle, focus, and discipline required to quiet the restless mind and experience the divine.", interpretation: "An uncontrolled mind is one's greatest enemy; a disciplined mind is one's greatest ally. It offers a pragmatic approach to inner engineering and emotional regulation." },
+            { no: 7, title: "Jnana Vijnana Yoga", subtitle: "Knowledge of the Absolute", summary: "Explains the physical and spiritual energies of the Supreme. Krishna describes how the entire universe is strung on Him like pearls on a thread, yet the world is deluded by the three modes of nature.", interpretation: "The divine is the underlying essence and structural framework of all that exists. Recognizing this interconnectedness is the antidote to existential isolation." },
+            { no: 8, title: "Akshara Brahma Yoga", subtitle: "The Imperishable Brahman", summary: "Discusses the soul's journey after death and the importance of remembering the Divine at the final moment. It explains the cycles of cosmic creation and dissolution.", interpretation: "Life's ultimate focus and daily habits dictate one's spiritual destination. How we live determines how we transition, emphasizing mindfulness in every moment." },
+            { no: 9, title: "Raja Vidya Raja Guhya Yoga", subtitle: "The Royal Secret", summary: "Declares Bhakti (devotion) as the highest, most direct path. Krishna promises that even the most fallen can be elevated quickly through pure, unalloyed devotion.", interpretation: "Unconditional love and surrender open the door to ultimate freedom more efficiently than pure intellect or rigorous asceticism. It democratizes spiritual liberation for all." },
+            { no: 10, title: "Vibhuti Yoga", subtitle: "Divine Glories", summary: "Krishna reveals his omnipresence by describing His specific manifestations in the world—identifying Himself as the best, the most powerful, and the essence of all categories of beings.", interpretation: "Seeing the divine in all aspects of the universe—both terrifying and beautiful—fosters a profound reverence for life and cultivates a state of constant awe." },
+            { no: 11, title: "Vishvarupa Darshana Yoga", subtitle: "The Universal Form", summary: "Krishna grants Arjuna divine vision to see His awe-inspiring, infinite cosmic form, encompassing all of time, space, creation, and destruction.", interpretation: "A humbling realization of the vastness of creation, meant to completely dissolve the human ego and contextualize our trivial anxieties against the backdrop of eternity." },
+            { no: 12, title: "Bhakti Yoga", subtitle: "Path of Devotion", summary: "Outlines the qualities of a true devotee who is dear to God. Krishna explains that fixing the mind on the personal form of God is a more accessible path than meditating on the unmanifest.", interpretation: "Steadfast devotion, emotional intelligence, and compassion for all creatures surpass mere intellectual knowledge in reaching spiritual equilibrium." },
+            { no: 13, title: "Kshetra Kshetrajna Vibhaga Yoga", subtitle: "Field and Knower", summary: "Provides a detailed analytical distinction between the material body (the field) and the soul/Supersoul (the knower of the field), defining true knowledge as understanding this difference.", interpretation: "Spiritual growth requires radical detachment from the physical vehicle to recognize the eternal observer within. It is the ultimate exercise in objective self-awareness." },
+            { no: 14, title: "Gunatraya Vibhaga Yoga", subtitle: "Three Modes of Nature", summary: "Analyzes the three fundamental qualities of material nature: Sattva (goodness/purity), Rajas (passion/action), and Tamas (ignorance/inertia), and how they bind the soul.", interpretation: "Understanding our base psychological drives and environmental influences is the first crucial step to mastering and eventually transcending them to reach pure consciousness." },
+            { no: 15, title: "Purushottama Yoga", subtitle: "Supreme Person", summary: "Describes the material world as an inverted banyan tree. One must cut down this tree with the axe of detachment to reach the supreme spiritual abode from which one never returns.", interpretation: "Detachment acts as the necessary weapon to cut through the entangled, complex roots of material obsession and sensory addiction." },
+            { no: 16, title: "Daivasura Sampad Vibhaga Yoga", subtitle: "Divine and Demonic Natures", summary: "Clearly contrasts virtuous, divine qualities that lead to liberation with destructive, demonic qualities (lust, anger, greed) that lead to bondage and suffering.", interpretation: "Cultivating divine traits is not just moral policing, but essential for personal evolution and maintaining psychological and social harmony." },
+            { no: 17, title: "Shraddhatraya Vibhaga Yoga", subtitle: "Threefold Faith", summary: "Explains how a person's faith, food, sacrifices, austerities, and charity are categorized according to the three modes of material nature (Sattva, Rajas, Tamas).", interpretation: "Our mundane choices in everyday life—what we eat, how we give, what we believe—are direct reflections of, and formative influences on, our inner spiritual state." },
+            { no: 18, title: "Moksha Sannyasa Yoga", subtitle: "Liberation and Renunciation", summary: "Summarizes the entire text. Krishna explains the true meaning of renunciation and concludes that ultimate perfection is achieved through surrender to the Supreme Lord.", interpretation: "Ultimate freedom and peace come not from escaping life, but from abandoning ego-driven motives, acting purely out of duty, and fully surrendering to the divine flow." }
+        ];
+
+const $ = id => document.getElementById(id);
+const app = $('app'), list = $('list'), content = $('content'), scroller = $('scroll');
+let current = 0;
+
+function renderList(filter = ''){
+  const q = filter.trim().toLowerCase();
+  list.innerHTML = '';
+  const shown = chapters.map((c,i)=>({c,i})).filter(({c}) =>
+    !q || `${c.no} ${c.title} ${c.subtitle} ${c.summary}`.toLowerCase().includes(q));
+  if(!shown.length){ list.innerHTML = '<li class="empty">No chapters match your search.</li>'; return; }
+  shown.forEach(({c,i}) => {
+    const li = document.createElement('li');
+    li.className = 'item' + (i === current ? ' active' : '');
+    li.tabIndex = 0;
+    li.dataset.i = i;
+    li.innerHTML = `<span class="num">${c.no}</span><div><h3>${c.title}</h3><p>${c.subtitle}</p></div>`;
+    li.addEventListener('click', () => select(i, true));
+    li.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); select(i, true); } });
+    list.appendChild(li);
+  });
+}
+
+function select(i, openOnMobile = false){
+  if(i < 0 || i >= chapters.length) return;
+  current = i;
+  const c = chapters[i];
+  list.querySelectorAll('.item').forEach(el => el.classList.toggle('active', +el.dataset.i === i));
+  const active = list.querySelector('.item.active');
+  if(active) active.scrollIntoView({block:'nearest', behavior:'smooth'});
+
+  content.classList.add('out');
+  setTimeout(() => {
+    $('bignum').textContent = String(c.no).padStart(2,'0');
+    content.innerHTML = `
+      <span class="chip"><i></i>Chapter ${c.no}</span>
+      <h2 class="title serif">${c.title}</h2>
+      <p class="subtitle serif">${c.subtitle}</p>
+      <div class="divider"></div>
+      <div class="label">Summary</div>
+      <p class="summary">${c.summary}</p>
+      <div class="insight">
+        <div class="label">Deeper Interpretation</div>
+        <p class="serif">${c.interpretation}</p>
+      </div>`;
+    scroller.scrollTop = 0;
+    content.classList.remove('out');
+  }, 220);
+
+  const pct = Math.round((i + 1) / chapters.length * 100);
+  $('pbar').style.width = pct + '%';
+  $('plabel').textContent = `Chapter ${c.no} of ${chapters.length}`;
+  $('ppct').textContent = pct + '%';
+  $('prev').disabled = i === 0;
+  $('next').disabled = i === chapters.length - 1;
+  if(openOnMobile && window.innerWidth <= 820) app.classList.add('reading');
+}
+
+$('prev').onclick = () => select(current - 1);
+$('next').onclick = () => select(current + 1);
+$('back').onclick = () => app.classList.remove('reading');
+$('search').addEventListener('input', e => renderList(e.target.value));
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT' || !home.classList.contains('hide')) return;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown' && e.target === document.body) select(current + 1);
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' && e.target === document.body) select(current - 1);
+});
+window.addEventListener('resize', () => { if(window.innerWidth > 820) app.classList.remove('reading'); });
+
+const home = $('home');
+function openApp(){ home.classList.add('hide'); }
+function goHome(){ home.classList.remove('hide'); $('begin').focus({preventScroll:true}); }
+$('begin').onclick = openApp;
+document.querySelector('.brand').onclick = goHome;
+document.querySelector('.brand').title = 'Back to home';
+$('begin').focus({preventScroll:true});
+
+renderList();
+select(0);
+</script>
+</body>
+</html>
