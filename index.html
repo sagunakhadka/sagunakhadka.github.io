@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -166,7 +164,7 @@
 <div id="bar"></div>
 <nav><div class="wrap">
   <a href="#top" class="logo">Saguna Khadka</a>
-  <ul id="navlinks"><span id="nv-ind"></span><li><a href="#about" data-sec="about">About</a></li><li><a href="#experience" data-sec="experience">Experience</a></li><li><a href="#certs" data-sec="certs">Certifications</a></li><li><a href="#approach" data-sec="approach">Approach</a></li><li><a href="#education" data-sec="education">Education</a></li></ul>
+  <ul id="navlinks"><span id="nv-ind"></span><li><a href="#about" data-sec="about">About</a></li><li><a href="#experience" data-sec="experience">Experience</a></li><li><a href="#certs" data-sec="certs">Certifications</a></li><li><a href="#approach" data-sec="approach">Approach</a></li><li><a href="#education" data-sec="education">Education</a></li><li><a href="#reading" data-sec="reading">Book</a></li></ul>
   <div class="rt"><button id="theme" aria-label="Toggle theme"><i data-lucide="sun-moon"></i></button><a class="pill" href="#contact">Contact</a></div>
 </div></nav>
 
@@ -257,6 +255,25 @@
   </div>
 </div></section>
 
+<section id="reading" style="border-top:1px solid var(--line)"><div class="wrap two">
+  <div>
+    <p class="lab rv">Writing &amp; Notes · पुस्तक</p>
+    <h2 class="rv d1">Pages from the <em>journey.</em></h2>
+    <p class="rv d2">Beyond the repair bench and terminal, I keep a curated intro book—a quiet space where I document foundational concepts, personal reflections, and the notes I've gathered along the way.</p>
+    <p class="rv d2">Whether you're curious about how I think through problems or just want to flip through a few pages of my story, the cover is always open.</p>
+  </div>
+  <div class="card rv d1" style="justify-content:center">
+    <small>Featured Read · Digital Book</small>
+    <h3>The Intro Book</h3>
+    <p style="margin:10px 0 24px">A closer look at my background, ideas, and learning notes—collected in one place.</p>
+    <div>
+      <a class="btn f" href="https://sagunakhadka.github.io/intro_book" target="_blank" rel="noopener">
+        <i data-lucide="book-open"></i>Read the Intro Book
+      </a>
+    </div>
+  </div>
+</div></section>
+
 <section id="contact" class="contact" style="border-top:1px solid var(--line)"><div class="wrap">
   <div class="portrait rv">
     <!-- Add your photo: put your file name in src, e.g. src="saguna.jpg" -->
@@ -266,7 +283,7 @@
   <h2 class="rv d1">Let's <em>talk.</em></h2>
   <p class="sub rv d2">Open to IT, networking and security opportunities.</p>
   <a class="mail rv d2" href="mailto:khadkasagu@gmail.com"><i data-lucide="mail"></i>khadkasagu@gmail.com</a>
-  <div class="links rv"><a href="https://www.instagram.com/saguna_kdk/" target="_blank" rel="noopener"><i data-lucide="instagram"></i>Instagram</a><a href="https://www.facebook.com/saguna.khadka25" target="_blank" rel="noopener"><i data-lucide="facebook"></i>Facebook</a><a href="https://www.tiktok.com/@kdk_476" target="_blank" rel="noopener"><i data-lucide="music-2"></i>TikTok</a><a href="https://www.linkedin.com/in/sagunakhadka-653051276" target="_blank" rel="noopener"><i data-lucide="linkedin"></i>LinkedIn</a><span><i data-lucide="map-pin"></i>Maryland, United States</span></div>
+  <div class="links rv"><a href="https://www.instagram.com/saguna_kdk/" target="_blank" rel="noopener"><i data-lucide="instagram"></i>Instagram</a><a href="https://www.facebook.com/saguna.khadka25" target="_blank" rel="noopener"><i data-lucide="facebook"></i>Facebook</a><a href="https://www.tiktok.com/@kdk_476" target="_blank" rel="noopener"><i data-lucide="music-2"></i>TikTok</a><a href="https://www.linkedin.com/in/sagunakhadka-653051276" target="_blank" rel="noopener"><i data-lucide="linkedin"></i>LinkedIn</a><a href="https://sagunakhadka.github.io/intro_book" target="_blank" rel="noopener"><i data-lucide="book-open"></i>Intro Book</a><span><i data-lucide="map-pin"></i>Maryland, United States</span></div>
 </div></section>
 
 <footer><div class="wrap"><span>&copy; <span id="yr"></span> Saguna Khadka</span><a href="#top">Back to top ↑</a></div></footer>
@@ -296,7 +313,7 @@
   (()=>{const ul=document.getElementById('navlinks'),ind=document.getElementById('nv-ind');
   const links=[...ul.querySelectorAll('a')],secs=links.map(a=>document.getElementById(a.dataset.sec)),contact=document.getElementById('contact');let cur=null;
   const place=a=>{if(!a){ind.classList.remove('show');return}
-  requestAnimationFrame(()=>{ind.style.width=a.offsetWidth+'px';ind.style.transform='translateX('+a.offsetLeft+'px)';ind.classList.add('show');
+  requestAnimationFrame(()=>{ind.style.width=a.offsetWidth+'px';ind.style.transform='translateX('+a.offsetLeft+'px)';ind.style.add('show');
   if(ul.scrollWidth>ul.clientWidth)ul.scrollTo({left:a.offsetLeft-24,behavior:'smooth'})})};
   const setActive=a=>{if(a===cur)return;cur=a;links.forEach(l=>{const on=l===a;l.classList.toggle('active',on);on?l.setAttribute('aria-current','true'):l.removeAttribute('aria-current')});place(a)};
   const spy=()=>{const line=innerHeight*.35;let a=null;secs.forEach((sec,i)=>{if(sec&&sec.getBoundingClientRect().top<=line)a=links[i]});
