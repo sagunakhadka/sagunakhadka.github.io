@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <title>Gautama Buddha: The Story of the Awakened One</title>
+  <meta name="description" content="The life of Siddhārtha Gautama, from birth in Lumbini to final nirvāṇa at Kushinagar, in ten chapters.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #eceffc;
+      --bg2: #fbeedd;
+      --ink: #1d1b3a;
+      --mute: #4f4c6e;
+      --glass: rgba(255, 255, 255, .58);
+      --edge: rgba(255, 255, 255, .88);
+      --sh: rgba(60, 50, 130, .16);
+      --o1: #f6b756;
+      --o2: #9b8cf2;
+      --o3: #7fd1c7;
+      --gold: #a8680a;
+      color-scheme: light;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg1: #0a0b24;
+        --bg2: #1b1033;
+        --ink: #f1eefc;
+        --mute: #b6b2d6;
+        --glass: rgba(20, 18, 42, .58);
+        --edge: rgba(255, 255, 255, .16);
+        --sh: rgba(0, 0, 0, .55);
+        --gold: #f3c26b;
+        color-scheme: dark;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg1: #0a0b24;
+      --bg2: #1b1033;
+      --ink: #f1eefc;
+      --mute: #b6b2d6;
+      --glass: rgba(20, 18, 42, .58);
+      --edge: rgba(255, 255, 255, .16);
+      --sh: rgba(0, 0, 0, .55);
+      --gold: #f3c26b;
+      color-scheme: dark;
+    }
+
+    /* Strict Horizontal Scroll Lock */
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      overflow-x: clip;
+      overscroll-behavior-x: none;
+    }
+
+    html {
+      scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
+      scroll-behavior: smooth;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    body {
+      margin: 0;
+      position: relative;
+      background: linear-gradient(160deg, var(--bg1), var(--bg2)) fixed;
+      color: var(--ink);
+      font: 400 clamp(.98rem, 2.5vw, 1.0625rem)/1.7 var(--sans);
+      -webkit-text-size-adjust: 100%;
+      overflow-wrap: break-word;
+      transition: background .35s ease, color .25s ease;
+    }
+
+    .orbs {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .orbs i {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: .55;
+      will-change: transform;
+      transition: background .5s ease;
+    }
+
+    .orbs i:nth-child(1) {
+      width: 55vmax;
+      height: 55vmax;
+      background: var(--o1);
+      left: -15vmax;
+      top: -10vmax;
+      transform: translateY(calc(var(--s, 0) * -.15px));
+    }
+
+    .orbs i:nth-child(2) {
+      width: 50vmax;
+      height: 50vmax;
+      background: var(--o2);
+      right: -20vmax;
+      top: 35vh;
+      transform: translateY(calc(var(--s, 0) * -.3px));
+    }
+
+    .orbs i:nth-child(3) {
+      width: 45vmax;
+      height: 45vmax;
+      background: var(--o3);
+      left: 5vmax;
+      bottom: -15vmax;
+      opacity: .4;
+      transform: translateY(calc(var(--s, 0) * -.1px));
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--edge);
+      border-radius: 28px;
+      box-shadow: 0 20px 50px -20px var(--sh), inset 0 1px 0 var(--edge);
+      -webkit-backdrop-filter: blur(22px) saturate(1.5);
+      backdrop-filter: blur(22px) saturate(1.5);
+      transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    #bar {
+      position: fixed;
+      top: env(safe-area-inset-top, 0px);
+      left: 0;
+      height: 3.5px;
+      width: calc(var(--p, 0) * 100%);
+      background: linear-gradient(90deg, var(--o1), var(--o2));
+      z-index: 30;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--serif);
+      font-weight: 600;
+      line-height: 1.08;
+      margin: 0;
+    }
+
+    .hero {
+      min-height: 100svh;
+      width: 100%;
+      display: grid;
+      place-items: center;
+      padding: 3.5rem 1rem;
+      perspective: 900px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      transform: rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
+      transition: transform .2s ease-out;
+    }
+
+    .wheel {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(92vw, 680px);
+      height: auto;
+      translate: -50% -50%;
+      color: var(--gold);
+      opacity: .45;
+      animation: spin 90s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes spin {
+      to { rotate: 360deg; }
+    }
+
+    .hero .glass {
+      position: relative;
+      width: 100%;
+      padding: clamp(1.85rem, 6vw, 3rem) clamp(1rem, 4vw, 2rem) clamp(1.6rem, 5vw, 2.5rem);
+      transform: translateZ(30px);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.25rem, 9.5vw, 5.2rem);
+      letter-spacing: -.01em;
+    }
+
+    .hero p.lede {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 4.3vw, 1.75rem);
+      line-height: 1.35;
+      color: var(--mute);
+      margin: .9rem auto 1.4rem;
+      max-width: 26ch;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .chips li, .m b {
+      font: 500 .8rem/1.1 var(--sans);
+      padding: .48rem .8rem;
+      border-radius: 99px;
+      background: var(--glass);
+      border: 1px solid var(--edge);
+    }
+
+    .cue {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: 1.5rem;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      padding: .8rem 1.45rem;
+      border-radius: 99px;
+      background: var(--glass);
+      border: 1px solid var(--edge);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .cue:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+
+    .cue:focus-visible, a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1rem 7.5rem;
+    }
+
+    .intro {
+      padding: 1.4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .intro p {
+      margin: 0;
+    }
+
+    .line {
+      position: relative;
+      padding-left: 2.5rem;
+      width: 100%;
+    }
+
+    .line::before {
+      content: "";
+      position: absolute;
+      left: .95rem;
+      top: .5rem;
+      bottom: .5rem;
+      width: 2px;
+      background: linear-gradient(var(--o1), var(--o2), var(--o3));
+      opacity: .75;
+      border-radius: 2px;
+    }
+
+    .ch {
+      position: relative;
+      width: 100%;
+      padding: 1.5rem 1.25rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .ch > i {
+      position: absolute;
+      left: -2.5rem;
+      top: 1.4rem;
+      width: 1.95rem;
+      height: 1.95rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font: 600 .82rem/1 var(--sans);
+      font-style: normal;
+      background: var(--glass);
+      border: 1px solid var(--edge);
+      color: var(--gold);
+      box-shadow: 0 4px 12px var(--sh);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .ch h2 {
+      font-size: clamp(1.65rem, 5.5vw, 2.5rem);
+      margin: .65rem 0 .75rem;
+    }
+
+    .ch p {
+      margin: 0 0 .9rem;
+    }
+
+    .m {
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+
+    .m b {
+      font-weight: 500;
+      color: var(--mute);
+    }
+
+    .why {
+      margin: 1.1rem 0 0 !important;
+      padding: .85rem 1rem;
+      border-radius: 18px;
+      background: var(--glass);
+      border: 1px solid var(--edge);
+      font-size: .94rem;
+      color: var(--mute);
+    }
+
+    .why strong {
+      color: var(--ink);
+    }
+
+    .js .ch {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+
+    .js .ch.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    section.t {
+      margin: 3.5rem 0 0;
+      width: 100%;
+    }
+
+    section.t > h2 {
+      font-size: clamp(1.9rem, 6.5vw, 3rem);
+      margin-bottom: .5rem;
+    }
+
+    section.t > p {
+      color: var(--mute);
+      margin: 0 0 1.25rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .ch {
+        padding: 2rem;
+      }
+    }
+
+    .card {
+      padding: 1.35rem;
+      width: 100%;
+    }
+
+    .card h3 {
+      font-size: 1.55rem;
+      margin-bottom: .4rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--mute);
+      font-size: .95rem;
+    }
+
+    .path {
+      padding: 1.3rem;
+      width: 100%;
+    }
+
+    .path h3 {
+      font-size: 1.35rem;
+      margin: .1rem 0 .6rem;
+    }
+
+    .path + .path {
+      margin-top: .85rem;
+    }
+
+    /* Contained Horizontal Carousel (Zero Negative Margin Bleed) */
+    .snap {
+      display: flex;
+      gap: .85rem;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: .2rem .1rem 1rem;
+      margin: 0;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .snap::-webkit-scrollbar {
+      display: none;
+    }
+
+    .snap .card {
+      flex: 0 0 85%;
+      max-width: 85%;
+      scroll-snap-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .snap .card {
+        flex-basis: 46%;
+        max-width: 46%;
+      }
+    }
+
+    .note {
+      margin-top: 2.75rem;
+      padding: 1.2rem 1.3rem;
+      font-size: .9rem;
+      color: var(--mute);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--mute);
+      padding: 0 1rem 6.5rem;
+      font-family: var(--serif);
+      font-size: 1.3rem;
+    }
+
+    /* Unified Bottom Floating Bar */
+    .hud {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+      margin: 0 auto;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      width: 100%;
+      max-width: 500px;
+      padding: 0 .85rem;
+      pointer-events: none;
+    }
+
+    #pill {
+      pointer-events: auto;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .35s ease, transform .35s ease;
+      padding: .7rem 1.1rem;
+      border-radius: 99px;
+      font: 500 .85rem/1 var(--sans);
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1 1 auto;
+      max-width: calc(100% - 3.25rem);
+      text-align: center;
+    }
+
+    #pill.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .palette-wrap {
+      position: relative;
+      pointer-events: auto;
+      flex-shrink: 0;
+    }
+
+    .palette-btn {
+      width: 2.7rem;
+      height: 2.7rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--ink);
+      padding: 0;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .palette-btn:hover {
+      transform: scale(1.05);
+      border-color: var(--gold);
+    }
+
+    .palette-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .theme-panel {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 10px);
+      width: min(86vw, 280px);
+      padding: .95rem;
+      border-radius: 22px;
+      opacity: 0;
+      transform: translateY(10px) scale(.96);
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      transform-origin: bottom right;
+    }
+
+    .theme-panel.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .75rem;
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--mute);
+    }
+
+    .mode-btn {
+      background: var(--glass);
+      border: 1px solid var(--edge);
+      color: var(--ink);
+      border-radius: 99px;
+      padding: .28rem .65rem;
+      font: 500 .74rem/1 var(--sans);
+      cursor: pointer;
+    }
+
+    .presets {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: .45rem;
+      margin-bottom: .85rem;
+    }
+
+    .swatch {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 2px solid var(--edge);
+      cursor: pointer;
+      padding: 0;
+      box-shadow: 0 4px 10px var(--sh);
+      transition: transform .18s ease, border-color .18s ease;
+    }
+
+    .swatch:hover, .swatch.active {
+      transform: scale(1.1);
+      border-color: var(--gold);
+    }
+
+    .custom-pickers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+      padding-top: .7rem;
+      border-top: 1px solid var(--edge);
+    }
+
+    .picker-label {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .78rem;
+      color: var(--mute);
+      cursor: pointer;
+      padding: .35rem .5rem;
+      border-radius: 12px;
+      background: var(--glass);
+      border: 1px solid var(--edge);
+    }
+
+    .picker-label input[type="color"] {
+      -webkit-appearance: none;
+      appearance: none;
+      border: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    .picker-label input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    .picker-label input[type="color"]::-webkit-color-swatch {
+      border: 1px solid var(--edge);
+      border-radius: 50%;
+    }
+
+    /* Small Phone Viewport Lock */
+    @media (max-width: 520px) {
+      .hero {
+        padding: 2rem .85rem 3rem;
+        perspective: none;
+      }
+      .hero .glass {
+        border-radius: 22px;
+        transform: none;
+      }
+      .chips li, .m b {
+        font-size: .74rem;
+        padding: .4rem .68rem;
+      }
+      main {
+        padding: 0 .85rem 6.5rem;
+      }
+      .intro {
+        padding: 1.15rem;
+        margin-bottom: 1.85rem;
+        border-radius: 20px;
+      }
+      .line {
+        padding-left: 2rem;
+      }
+      .line::before {
+        left: .75rem;
+      }
+      .ch {
+        padding: 1.2rem 1rem;
+        border-radius: 20px;
+        margin-bottom: 1.15rem;
+      }
+      .ch > i {
+        left: -2rem;
+        top: 1.2rem;
+        width: 1.55rem;
+        height: 1.55rem;
+        font-size: .74rem;
+      }
+      .card, .path, .note {
+        padding: 1.15rem;
+        border-radius: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .wheel { animation: none; }
+      .js .ch { opacity: 1; transform: none; transition: none; }
+      .stage { transition: none; }
+    }
+  </style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="hero">
+  <div class="stage" id="stage">
+    <svg class="wheel" viewBox="-100 -100 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1"><circle r="94"/><circle r="86" stroke-opacity=".5"/><circle r="24"/><circle r="9" fill="currentColor"/><path d="M-86 0H86"/><path d="M-86 0H86" transform="rotate(45)"/><path d="M-86 0H86" transform="rotate(90)"/><path d="M-86 0H86" transform="rotate(135)"/><g stroke-opacity=".7"><ellipse cy="-60" rx="9" ry="17" transform="rotate(22.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(67.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(112.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(157.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(202.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(247.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(292.5)"/><ellipse cy="-60" rx="9" ry="17" transform="rotate(337.5)"/></g></g></svg>
+    <div class="glass">
+      <h1>Siddhārtha Gautama</h1>
+      <p class="lede">The prince who left his palace and woke up under a tree.</p>
+      <ul class="chips"><li>Born in Lumbini, Nepal</li><li>Awakened at Bodh Gaya</li><li>Lived about 80 years</li></ul>
+      <a class="cue" href="#c1">Begin the story</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="glass intro"><p>This is the life of the Buddha in ten chapters, following the early Pali discourses and later biographies such as the Buddhacarita. Scroll down to follow him from a garden in Lumbini to the twin sal trees of Kushinagar.</p></div>
+
+  <div class="line">
+
+    <article class="ch glass" id="c1" data-t="Birth at Lumbini"><i>1</i>
+      <p class="m"><b>Lumbini</b><b>Birth</b></p>
+      <h2>Birth at Lumbini</h2>
+      <p>Queen Māyā of the Shakya clan, wife of King Śuddhodana, dreamed that a white elephant entered her side. Near her due date she travelled toward her parents’ home in Devadaha. In the Lumbinī garden she paused, held the branch of a sal tree, and gave birth standing.</p>
+      <p>Tradition says the newborn took seven steps, a lotus blooming at each, and declared this his last birth. He was named Siddhārtha, “one who achieves his aim.” Māyā died a week later, and her sister Mahāpajāpati Gotamī raised him as her own.</p>
+      <p class="why"><strong>Why it matters:</strong> Emperor Ashoka later raised a pillar at Lumbini recording the birth, which is why the site can be identified today.</p></article>
+
+    <article class="ch glass" id="c2" data-t="The sheltered prince"><i>2</i>
+      <p class="m"><b>Kapilavastu</b><b>Age 0 to 29</b></p>
+      <h2>The sheltered prince</h2>
+      <p>The sage Asita visited the infant, recognised the marks of greatness, and wept: he would not live to hear the teaching. He foretold two paths, a universal king or a fully awakened teacher. Śuddhodana wanted the first, so he built a world without pain: palaces for each season, music, gardens, and guards.</p>
+      <p>Siddhārtha trained as a warrior and excelled. At sixteen he married his cousin Yaśodharā. As a boy he had once sat beneath a rose-apple tree during a ploughing festival and slipped into deep stillness, a memory that would matter years later. At twenty-nine, Yaśodharā gave birth to their son, Rāhula.</p>
+      <p class="why"><strong>Why it matters:</strong> His comfort was complete, which makes the choice to leave it behind the heart of the whole story.</p></article>
+
+    <article class="ch glass" id="c3" data-t="The Four Sights"><i>3</i>
+      <p class="m"><b>Outside the palace</b><b>Age 29</b></p>
+      <h2>The Four Sights</h2>
+      <p>Curious about the world beyond the walls, Siddhārtha rode out with his charioteer Channa. He saw an old man bent with age, a sick man, and a corpse carried to the pyre. Each time he asked whether this could happen to him, and each time Channa answered yes.</p>
+      <p>On a fourth outing he met a wandering ascetic with a calm face. Unsettled by what he had seen, he began to wonder whether a way out of ageing, sickness, and death existed.</p>
+      <p class="why"><strong>Why it matters:</strong> The sights frame the central question of his life: what is real freedom when every pleasure ends?</p></article>
+
+    <article class="ch glass" id="c4" data-t="The Great Renunciation"><i>4</i>
+      <p class="m"><b>River Anomā</b><b>Age 29</b></p>
+      <h2>The Great Renunciation</h2>
+      <p>On the night Rāhula was born, Siddhārtha looked once at his sleeping wife and child and left in silence. With Channa and his horse Kanthaka he rode through the night and crossed the river Anomā.</p>
+      <p>On the far bank he cut off his hair with his sword, exchanged his royal clothes for a simple robe, and sent Channa home with his ornaments. Legend says Kanthaka died of grief. Siddhārtha walked on alone as a seeker.</p>
+      <p class="why"><strong>Why it matters:</strong> Buddhist tradition calls this the Great Going Forth, and monastic ordination still echoes it.</p></article>
+
+    <article class="ch glass" id="c5" data-t="Six years of seeking"><i>5</i>
+      <p class="m"><b>Magadha, Uruvelā</b><b>Age 29 to 35</b></p>
+      <h2>Six years of seeking</h2>
+      <p>He studied with two famous teachers: Āḷāra Kālāma, who taught a meditation of nothingness, and Uddaka Rāmaputta, who taught a state beyond perception. He mastered both, but found that neither ended suffering. King Bimbisāra of Magadha offered him a share of his kingdom, and he declined.</p>
+      <p>With five companions he then practised harsh austerity near Uruvelā, eating almost nothing until his body was skeletal. He nearly died, and realised that starvation was as much a trap as luxury. He remembered the stillness of his boyhood and accepted a bowl of milk-rice from a village woman named Sujātā. His five companions left in disgust.</p>
+      <p class="why"><strong>Why it matters:</strong> This is the origin of the Middle Way, a path between indulgence and self-torment.</p></article>
+
+    <article class="ch glass" id="c6" data-t="Awakening at Bodh Gaya"><i>6</i>
+      <p class="m"><b>Bodh Gaya</b><b>Age 35</b></p>
+      <h2>Awakening at Bodh Gaya</h2>
+      <p>He sat beneath a pipal tree, later called the Bodhi tree, and vowed not to rise until he understood. Māra, the embodiment of fear and desire, attacked with armies, storms, and temptation. Siddhārtha touched the earth with his right hand and called it to witness his long effort. Māra’s forces vanished.</p>
+      <p>Through the night, tradition says, he passed through three watches. In the first he saw his past lives. In the second he saw beings rising and falling according to their actions. In the third he understood the nature of suffering, its cause, and its end. At dawn he was the Buddha, “the awakened one.”</p>
+      <p>He lingered for weeks near the tree. Once, the serpent king Mucalinda coiled around him to shelter him from a storm. He hesitated to teach something so subtle, until the god Brahmā Sahampati begged him to share it.</p>
+      <p class="why"><strong>Why it matters:</strong> Bodh Gaya is the holiest site in Buddhism, and a descendant of the original tree still stands there.</p></article>
+
+    <article class="ch glass" id="c7" data-t="The first sermon"><i>7</i>
+      <p class="m"><b>Sarnath, near Varanasi</b><b>Age 35</b></p>
+      <h2>The first sermon</h2>
+      <p>He walked to the deer park at Isipatana to find his five former companions. They agreed to listen. He taught them the Middle Way, the Four Noble Truths, and the Eightfold Path, in a discourse known as “Setting the Wheel of Dhamma in Motion.”</p>
+      <p>Kondañña understood first, and the Buddha said “Kondañña has understood.” The five became his first monks, and the Sangha, the community, was born. The wheel became the symbol of the teaching.</p>
+      <p class="why"><strong>Why it matters:</strong> The Buddha, the Dhamma, and the Sangha, the Three Jewels, were now all present.</p></article>
+
+    <article class="ch glass" id="c8" data-t="A community grows"><i>8</i>
+      <p class="m"><b>Rājagaha, Sāvatthī, Kapilavastu</b><b>Age 35 to 55</b></p>
+      <h2>A community grows</h2>
+      <p>A wealthy youth named Yasa and his friends joined, followed by the three Kassapa brothers, fire-worshipping ascetics. King Bimbisāra became a lay follower and gave the Veluvana bamboo grove as a retreat. Two brilliant seekers, Sāriputta and Moggallāna, became his chief disciples. The merchant Anāthapiṇḍika bought the Jeta grove at Sāvatthī, said to have been paid for by covering it in gold coins.</p>
+      <p>The Buddha returned to Kapilavastu. His father Śuddhodana became a follower, and Rāhula was ordained as a novice. His cousin Ānanda became his devoted attendant for the last twenty-five years of his life. After Ānanda’s urging, Mahāpajāpati Gotamī and many women were ordained, forming one of the earliest orders of nuns in recorded history.</p>
+      <p class="why"><strong>Why it matters:</strong> The monsoon retreat, the monastic code, and the lay community all took shape in these years.</p></article>
+
+    <article class="ch glass" id="c9" data-t="Stories of compassion"><i>9</i>
+      <p class="m"><b>Sāvatthī and beyond</b><b>Teaching years</b></p>
+      <h2>Stories of compassion</h2>
+      <p><strong>Kisā Gotamī.</strong> A grieving mother carried her dead child, begging for medicine. The Buddha asked her to bring a mustard seed from any house where no one had died. She walked from door to door, and found none. She buried her child and became a nun.</p>
+      <p><strong>Aṅgulimāla.</strong> A feared bandit wore a necklace of fingers. The Buddha walked calmly, and Aṅgulimāla could not catch him. “I have stopped,” said the Buddha, “you should stop too.” The killer broke down, was ordained, and became a monk.</p>
+      <p><strong>Devadatta.</strong> The Buddha’s cousin grew jealous, tried to split the Sangha, and even plotted against him. The Buddha did not retaliate.</p>
+      <p class="why"><strong>Why it matters:</strong> These stories show the teaching as practised: patience, direct questions, and compassion for everyone.</p></article>
+
+    <article class="ch glass" id="c10" data-t="Final nirvāṇa at Kushinagar"><i>10</i>
+      <p class="m"><b>Vesālī to Kushinagar</b><b>Age 80</b></p>
+      <h2>Final nirvāṇa at Kushinagar</h2>
+      <p>At eighty, the Buddha travelled north from Rājagaha with Ānanda, teaching along the way. At Vesālī he said he would pass away in three months. The blacksmith Cunda offered him a last meal, after which he fell gravely ill. He asked that Cunda not be blamed, as the meal had been given in good faith.</p>
+      <p>He reached Kushinagar and lay down between two sal trees, which bloomed out of season. His last disciple, Subhadda, was ordained that night. His final words, in essence, were that all conditioned things pass away, so strive with diligence.</p>
+      <p>His body was cremated, and the relics were divided among eight kingdoms, each building a stupa.</p>
+      <p class="why"><strong>Why it matters:</strong> His death, called parinibbāna, was calm and teaching to the end. The tradition he left now spans the world.</p></article>
+
+  </div>
+
+  <section class="t">
+    <h2>The core teaching</h2>
+    <p>The Four Noble Truths, from the first sermon, work like a doctor’s diagnosis.</p>
+    <div class="grid">
+      <div class="card glass"><h3>Dukkha</h3><p>Life contains suffering, dissatisfaction, and impermanence, not only pain.</p></div>
+      <div class="card glass"><h3>Samudaya</h3><p>Suffering arises from craving and clinging, and from ignorance of how things are.</p></div>
+      <div class="card glass"><h3>Nirodha</h3><p>Suffering can end. This freedom is called nirvāṇa.</p></div>
+      <div class="card glass"><h3>Magga</h3><p>A practical path leads to the end of suffering: the Eightfold Path.</p></div>
+    </div>
+  </section>
+
+  <section class="t">
+    <h2>The Eightfold Path</h2>
+    <p>Eight practices, usually grouped in three trainings.</p>
+    <div class="glass path"><h3>Wisdom</h3><ul class="chips" style="justify-content:flex-start"><li>Right view</li><li>Right intention</li></ul></div>
+    <div class="glass path"><h3>Ethics</h3><ul class="chips" style="justify-content:flex-start"><li>Right speech</li><li>Right action</li><li>Right livelihood</li></ul></div>
+    <div class="glass path"><h3>Mind</h3><ul class="chips" style="justify-content:flex-start"><li>Right effort</li><li>Right mindfulness</li><li>Right concentration</li></ul></div>
+  </section>
+
+  <section class="t">
+    <h2>Four sacred places</h2>
+    <p>Pilgrims traditionally visit the sites of the birth, awakening, first sermon, and final nirvāṇa. Swipe to browse.</p>
+    <div class="snap">
+      <div class="card glass"><h3>Lumbini</h3><p>Nepal. The birthplace, with the Māyā Devī temple and the Ashokan pillar.</p></div>
+      <div class="card glass"><h3>Bodh Gaya</h3><p>Bihar, India. The Mahabodhi Temple stands beside the Bodhi tree.</p></div>
+      <div class="card glass"><h3>Sarnath</h3><p>Near Varanasi, India. The deer park of the first sermon.</p></div>
+      <div class="card glass"><h3>Kushinagar</h3><p>Uttar Pradesh, India. Where the Buddha passed into final nirvāṇa.</p></div>
+    </div>
+  </section>
+
+  <div class="glass note">A note on sources: the Buddha’s dates are debated, and most scholars place his life in the 5th century BCE. The earliest accounts were passed down orally before being written. Supernatural details such as the lotus steps and Māra’s armies are traditional elements of the story.</div>
+</main>
+
+<footer>May all beings be happy.</footer>
+
+<!-- Unified Responsive Floating Dock -->
+<div class="hud">
+  <a class="glass" id="pill" href="#c1" aria-live="polite">1 of 10: Birth at Lumbini</a>
+
+  <div class="palette-wrap">
+    <button class="glass palette-btn" id="palette-btn" aria-label="Customize Colors" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0 0 20 2 2 0 0 0 2-2v-.5a1.5 1.5 0 0 1 1.5-1.5H17a5 5 0 0 0 5-5c0-5.52-4.48-10-10-10Z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16.5" cy="10.5" r="1"/></svg>
+    </button>
+
+    <div class="glass theme-panel" id="theme-panel" role="dialog" aria-label="Color Theme Settings">
+      <div class="panel-head">
+        <span>Atmosphere</span>
+        <button class="mode-btn" id="mode-toggle" type="button">Dark / Light</button>
+      </div>
+      <div class="presets" id="presets">
+        <button class="swatch active" type="button" title="Dawn Lotus" data-bg1="#eceffc" data-bg2="#fbeedd" data-o1="#f6b756" data-o2="#9b8cf2" style="background:linear-gradient(135deg,#eceffc,#fbeedd)"></button>
+        <button class="swatch" type="button" title="Saffron Robe" data-bg1="#fff0d9" data-bg2="#fcd3b6" data-o1="#f59e0b" data-o2="#ea580c" style="background:linear-gradient(135deg,#fff0d9,#fcd3b6)"></button>
+        <button class="swatch" type="button" title="Bodhi Leaf" data-bg1="#e3f5ec" data-bg2="#f5f7dc" data-o1="#34d399" data-o2="#fbbf24" style="background:linear-gradient(135deg,#e3f5ec,#f5f7dc)"></button>
+        <button class="swatch" type="button" title="Himalayan Mist" data-bg1="#e0f2fe" data-bg2="#ede9fe" data-o1="#38bdf8" data-o2="#818cf8" style="background:linear-gradient(135deg,#e0f2fe,#ede9fe)"></button>
+        <button class="swatch" type="button" title="Midnight Zen" data-bg1="#0a0b24" data-bg2="#1b1033" data-o1="#f6b756" data-o2="#9b8cf2" style="background:linear-gradient(135deg,#0a0b24,#1b1033)"></button>
+      </div>
+      <div class="custom-pickers">
+        <label class="picker-label">
+          <input type="color" id="bg-color-1" value="#eceffc" aria-label="Top Gradient Color">
+          <span>Top</span>
+        </label>
+        <label class="picker-label">
+          <input type="color" id="bg-color-2" value="#fbeedd" aria-label="Bottom Gradient Color">
+          <span>Base</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.documentElement.classList.add('js');
+  (function(){
+    var r = document.documentElement,
+        chs = [].slice.call(document.querySelectorAll('.ch')),
+        pill = document.getElementById('pill'),
+        stage = document.getElementById('stage');
+
+    if ('IntersectionObserver' in window) {
+      var rev = new IntersectionObserver(function(es) {
+        es.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            rev.unobserve(e.target);
+          }
+        });
+      }, { threshold: .08 });
+      chs.forEach(function(c) { rev.observe(c); });
+
+      var cur = new IntersectionObserver(function(es) {
+        es.forEach(function(e) {
+          if (e.isIntersecting) {
+            pill.textContent = e.target.querySelector('i').textContent + ' of 10: ' + e.target.dataset.t;
+            pill.href = '#' + e.target.id;
+          }
+        });
+      }, { rootMargin: '-38% 0px -55% 0px' });
+      chs.forEach(function(c) { cur.observe(c); });
+    } else {
+      chs.forEach(function(c) { c.classList.add('in'); });
+    }
+
+    var tick = false;
+    function upd() {
+      var y = window.scrollY,
+          h = document.documentElement.scrollHeight - window.innerHeight;
+      r.style.setProperty('--p', h > 0 ? Math.min(1, y / h) : 0);
+      r.style.setProperty('--s', y);
+      pill.classList.toggle('on', y > window.innerHeight * .55);
+      tick = false;
+    }
+    window.addEventListener('scroll', function() {
+      if (!tick) {
+        tick = true;
+        requestAnimationFrame(upd);
+      }
+    }, { passive: true });
+    upd();
+
+    if (window.matchMedia('(hover:hover)').matches) {
+      document.querySelector('.hero').addEventListener('pointermove', function(e) {
+        var x = e.clientX / window.innerWidth - .5,
+            y = e.clientY / window.innerHeight - .5;
+        stage.style.setProperty('--rx', (x * 10) + 'deg');
+        stage.style.setProperty('--ry', (-y * 8) + 'deg');
+      });
+      document.querySelector('.hero').addEventListener('pointerleave', function() {
+        stage.style.setProperty('--rx', '0deg');
+        stage.style.setProperty('--ry', '0deg');
+      });
+    }
+
+    // Color Studio & Auto-Contrast Engine
+    var c1 = document.getElementById('bg-color-1'),
+        c2 = document.getElementById('bg-color-2'),
+        pBtn = document.getElementById('palette-btn'),
+        pPanel = document.getElementById('theme-panel'),
+        modeBtn = document.getElementById('mode-toggle'),
+        swatches = [].slice.call(document.querySelectorAll('.swatch'));
+
+    function getLuminance(hex) {
+      var rgb = parseInt(hex.slice(1), 16);
+      var red = (rgb >> 16) & 0xff,
+          grn = (rgb >> 8) & 0xff,
+          blu = (rgb >> 0) & 0xff;
+      return (0.299 * red + 0.587 * grn + 0.114 * blu) / 255;
+    }
+
+    function applyColors(hex1, hex2, o1, o2) {
+      r.style.setProperty('--bg1', hex1);
+      r.style.setProperty('--bg2', hex2);
+      if (o1) r.style.setProperty('--o1', o1);
+      if (o2) r.style.setProperty('--o2', o2);
+      c1.value = hex1;
+      c2.value = hex2;
+      var avgLum = (getLuminance(hex1) + getLuminance(hex2)) / 2;
+      r.setAttribute('data-theme', avgLum < 0.45 ? 'dark' : 'light');
+    }
+
+    pBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = pPanel.classList.toggle('open');
+      pBtn.setAttribute('aria-expanded', open);
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!pPanel.contains(e.target) && e.target !== pBtn) {
+        pPanel.classList.remove('open');
+        pBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    swatches.forEach(function(sw) {
+      sw.addEventListener('click', function() {
+        swatches.forEach(function(s) { s.classList.remove('active'); });
+        sw.classList.add('active');
+        applyColors(sw.dataset.bg1, sw.dataset.bg2, sw.dataset.o1, sw.dataset.o2);
+      });
+    });
+
+    modeBtn.addEventListener('click', function() {
+      var isDark = r.getAttribute('data-theme') === 'dark' ||
+                   (!r.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme:dark)').matches);
+      if (isDark) {
+        applyColors('#eceffc', '#fbeedd', '#f6b756', '#9b8cf2');
+      } else {
+        applyColors('#0a0b24', '#1b1033', '#f6b756', '#9b8cf2');
+      }
+    });
+
+    c1.addEventListener('input', function(e) { applyColors(e.target.value, c2.value); });
+    c2.addEventListener('input', function(e) { applyColors(c1.value, e.target.value); });
+  })();
+</script>
+</body>
+</html>
