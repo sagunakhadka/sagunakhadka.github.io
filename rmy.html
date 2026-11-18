@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Ramayana — A Reader’s Guide</title>
+<style>
+:root{--bg:#0b0907;--ink:#f1ebe0;--mute:#a89d8c;--line:rgba(241,235,224,.16);--accent:#e0932f;--card:#14100c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f0e4;--ink:#1a1410;--mute:#6b5f50;--line:rgba(26,20,16,.18);--accent:#b8691a;--card:#efe6d4;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f6f0e4;--ink:#1a1410;--mute:#6b5f50;--line:rgba(26,20,16,.18);--accent:#b8691a;--card:#efe6d4;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.8 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,summary,.stat b{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:400}
+h1 i,h2 i{font-style:italic;color:var(--accent)}
+nav{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:9;display:flex;gap:2px;padding:5px;max-width:calc(100vw - 24px);overflow-x:auto;white-space:nowrap;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:99px}
+nav a{color:var(--ink);text-decoration:none;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:99px;transition:background .2s,color .2s}
+nav a:hover{background:var(--ink);color:var(--bg)}
+.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+header{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;padding:110px 24px 80px;overflow:hidden}
+.sun{position:absolute;left:50%;top:46%;width:min(86vw,640px);aspect-ratio:1;margin:calc(min(86vw,640px)/-2) 0 0 calc(min(86vw,640px)/-2);border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,190,90,.9),rgba(224,147,47,.55) 38%,rgba(224,147,47,.08) 68%,transparent 72%);filter:blur(2px);will-change:transform}
+header .in{position:relative}
+.eb{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 18px}
+h1{font-size:clamp(54px,13vw,148px);line-height:.95;margin:0 0 24px;letter-spacing:-.03em}
+header p.sub{max-width:520px;margin:0 auto;color:var(--mute);font-size:19px}
+.cue{display:inline-block;margin-top:44px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:10px 20px}
+.tick{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;font:italic 26px Georgia,serif;color:var(--mute);padding:14px 0}
+.tick div{display:inline-block;animation:mq 40s linear infinite;padding-left:100%}
+@keyframes mq{to{transform:translateX(-100%)}}
+section{padding:110px 0 10px}
+h2{font-size:clamp(34px,6.4vw,60px);line-height:1.08;margin:0 0 20px;letter-spacing:-.02em}
+.lead{color:var(--mute);margin:0 0 36px;font-size:18px;max-width:600px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin:40px 0;border-block:1px solid var(--line)}
+.stat{padding:26px 8px;text-align:center}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat b{display:block;font-size:clamp(26px,5vw,40px);color:var(--accent)}
+.stat span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;padding:26px 0;font-size:clamp(22px,4.4vw,32px);list-style:none;display:flex;gap:20px;align-items:center;letter-spacing:-.01em;transition:color .2s}
+summary:hover{color:var(--accent)}
+summary::-webkit-details-marker{display:none}
+summary .n{font:italic 18px Georgia,serif;color:var(--accent);flex:none;width:30px}
+summary small{display:block;font:400 12px system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-top:2px}
+summary::after{content:"+";margin-left:auto;font:300 30px system-ui;color:var(--mute);transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg);color:var(--accent)}
+.body{padding:0 0 30px 50px;max-width:680px}
+.body h3{font:400 12px system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:22px 0 4px}
+.body p{margin:6px 0;color:var(--ink)}
+.cards{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 24px 22px;margin:0 -24px;scrollbar-width:thin}
+.card{flex:0 0 min(260px,78%);scroll-snap-align:start;border:1px solid var(--line);border-radius:22px;padding:24px;background:var(--card);transition:border-color .25s,transform .25s}
+.card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.card h3{margin:0 0 8px;font-size:26px;letter-spacing:-.01em}
+.card p{margin:0;font-size:15px;line-height:1.65;color:var(--mute)}
+#facts{counter-reset:f}
+.fact{counter-increment:f;display:grid;grid-template-columns:56px 1fr;gap:6px 12px;padding:34px 0;border-top:1px solid var(--line)}
+.fact::before{content:counter(f,decimal-leading-zero);font:italic 22px Georgia,serif;color:var(--accent);grid-row:1/4}
+.fact h3{margin:0;font-size:clamp(24px,4.6vw,32px);line-height:1.2}
+.fact p{margin:0;color:var(--mute)}
+.tag{display:inline-block;width:fit-content;font:400 11px system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border:1px solid var(--line);border-radius:99px;padding:3px 12px;margin-top:6px}
+.note{border:1px solid var(--line);border-radius:22px;padding:22px 24px;font-size:15px;color:var(--mute);margin:20px 0}
+.note b{color:var(--ink)}
+a{color:var(--accent)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:90px 24px 70px;margin-top:100px;border-top:1px solid var(--line)}
+footer::before{content:"Deepen your passion with every chapter.";display:block;font:italic clamp(26px,5vw,40px) Georgia,serif;color:var(--ink);margin-bottom:26px}
+.rv{opacity:0;translate:0 30px;transition:opacity .8s,translate .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;translate:0 0}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;translate:0 0;transition:none}.tick div{animation:none}html{scroll-behavior:auto}}
+@media(max-width:560px){.body{padding-left:0}.fact{grid-template-columns:40px 1fr}body{font-size:16.5px}nav a{padding:8px 10px;font-size:12px}}
+
+/* ---- glass layer ---- */
+:root{--glass:color-mix(in srgb,var(--ink) 7%,transparent);--glass2:color-mix(in srgb,var(--ink) 12%,transparent);--edge:color-mix(in srgb,var(--ink) 20%,transparent);--shine:inset 0 1px 0 color-mix(in srgb,var(--ink) 22%,transparent);--r:26px}
+body{background:var(--bg)}
+body::before{content:"";position:fixed;inset:-20vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 12% 8%,rgba(224,147,47,.34),transparent 60%),radial-gradient(34vmax 34vmax at 92% 30%,rgba(190,70,90,.26),transparent 60%),radial-gradient(40vmax 40vmax at 20% 88%,rgba(90,70,200,.22),transparent 60%),radial-gradient(30vmax 30vmax at 85% 92%,rgba(224,147,47,.2),transparent 60%);animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(3vmax,-2vmax,0) scale(1.06)}}
+#bar{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--accent),#ff6b81);z-index:20}
+nav{background:var(--glass);border-color:var(--edge);box-shadow:var(--shine),0 10px 40px rgba(0,0,0,.25);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%)}
+nav a{min-height:40px;display:inline-flex;align-items:center}
+header{padding-top:120px}
+header .in{padding:clamp(28px,6vw,56px) clamp(20px,5vw,56px);border-radius:36px;background:var(--glass);border:1px solid var(--edge);box-shadow:var(--shine),0 30px 80px rgba(0,0,0,.3);backdrop-filter:blur(26px) saturate(150%);-webkit-backdrop-filter:blur(26px) saturate(150%)}
+.eb{display:inline-block;background:var(--glass);border:1px solid var(--edge);border-radius:99px;padding:6px 14px;font-size:11px;box-shadow:var(--shine)}
+.cue{background:var(--accent);color:#1a1008;border:0;font-weight:600;min-height:46px;box-shadow:0 10px 30px rgba(224,147,47,.4);transition:transform .2s,box-shadow .2s}
+.cue:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(224,147,47,.55)}
+.tick{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.stats{border:0;gap:12px}
+.stat,.card,details,.fact,.note{background:var(--glass);border:1px solid var(--edge);border-radius:var(--r);box-shadow:var(--shine),0 18px 50px rgba(0,0,0,.18);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%)}
+.stat+.stat{border-left:1px solid var(--edge)}
+details{margin:14px 0;border-top:1px solid var(--edge);overflow:hidden;transition:background .3s,border-color .3s}
+details:last-of-type{border-bottom:1px solid var(--edge)}
+details[open]{background:var(--glass2);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+summary{padding:22px 24px;min-height:64px}
+summary::after{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--glass);border:1px solid var(--edge);font-size:24px;flex:none}
+.body{padding:0 24px 26px 74px;max-width:none}
+.card{transition:transform .3s,border-color .3s,background .3s}
+.card:hover{background:var(--glass2);transform:translateY(-6px)}
+.fact{display:grid;grid-template-columns:48px 1fr;padding:26px;margin:16px 0;border-top:1px solid var(--edge)}
+.fact::before{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--glass2);border:1px solid var(--edge);font-size:17px;grid-row:1/4}
+.tag{background:var(--glass);border-color:var(--edge)}
+.note{padding:22px 26px}
+footer{border-top:0;margin-top:90px}
+::selection{background:var(--accent);color:#111}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:12px}
+@supports not (backdrop-filter:blur(1px)){.stat,.card,details,.fact,.note,nav,header .in{background:var(--card)}}
+@media(max-width:700px){
+section{padding-top:80px}
+.wrap{padding:0 16px}
+header{padding:100px 14px 60px}
+header .in{border-radius:28px}
+.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}
+summary{padding:18px;gap:14px;font-size:21px}
+.body{padding:0 18px 22px}
+.fact{grid-template-columns:1fr;padding:22px 20px;border-radius:22px}
+.fact::before{grid-row:auto;margin-bottom:10px}
+.cards{padding-left:16px;padding-right:16px;margin:0 -16px}
+.card{flex-basis:76%}
+nav{top:calc(10px + env(safe-area-inset-top,0px))}
+footer{padding:70px 18px 56px}
+}
+@media(max-width:380px){.stats{grid-template-columns:1fr}h1{font-size:46px}}
+@media(prefers-reduced-motion:reduce){body::before{animation:none}}
+/* white hero text */
+header .in{background:rgba(12,9,6,.55);color:#fff;border-color:rgba(255,255,255,.22)}
+header h1{color:#fff}
+header h1 i{color:#ffb454}
+header .eb{color:#ffc77a;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25)}
+header p.sub{color:#fff;opacity:.95}
+.tick{background:rgba(12,9,6,.6);color:#fff}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<nav>
+<a href="#about">Overview</a><a href="#kandas">The 7 Kandas</a><a href="#people">Characters</a><a href="#versions">Versions</a><a href="#facts">Lesser-known facts</a>
+</nav>
+<header><div class="sun" id="sun"></div><div class="in"><p class="eb">Exploring the endless world of the epic</p><h1>The <i>Ramayana</i></h1><p class="sub">A journey from exile, to the forest, to Lanka, and home again. Told chapter by chapter, simply and slowly.</p><a class="cue" href="#about">Scroll scroll scroll</a></div></header><div class="tick"><div>Exile — The golden deer — A bridge of stone — Ten heads, one king — Fire and truth — The long way home — Exile — The golden deer — A bridge of stone — </div></div>
+
+<div class="wrap">
+<section id="about">
+<p class="eb">Noun · /rɑːˈmɑːjənə/</p><h2>What is the <i>Ramayana?</i></h2>
+<p class="lead">The “journey of Rama,” told in Sanskrit verse.</p>
+<p>The Ramayana is an ancient Sanskrit epic attributed to the sage <b>Valmiki</b>. It follows Prince Rama of Ayodhya: his banishment, the abduction of his wife Sita by the demon-king Ravana, the war to rescue her, and his return to become king. Beneath the adventure, it asks a lasting question: <i>how do you do the right thing when duties pull in different directions?</i></p>
+<div class="stats">
+<div class="stat"><b>7</b><span>Kandas (books)</span></div>
+<div class="stat"><b>~24,000</b><span>verses (traditionally)</span></div>
+<div class="stat"><b>Valmiki</b><span>traditional author</span></div>
+</div>
+<p>Valmiki’s text is called the <i>Adi Kavya</i>, the “first poem.” Over the centuries it has been retold in nearly every language and art form across Asia.</p>
+</section>
+
+<section id="kandas">
+<p class="eb">Chapter by chapter</p><h2>The Seven <i>Kandas</i></h2>
+<p class="lead">Tap a chapter to read its story. Each one builds on the last.</p>
+
+<details open><summary><span class="n">1</span><span>Bala Kanda<small>The Book of Childhood</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>Sage Narada tells Valmiki about an ideal man, and Valmiki is inspired to compose the epic. King Dasharatha of Ayodhya, childless, performs a sacrifice and is blessed with four sons: Rama, Bharata, Lakshmana and Shatrughna. The sage Vishwamitra takes young Rama and Lakshmana to protect his rituals from demons. Later, at King Janaka’s court in Mithila, Rama bends the great bow of Shiva and marries Sita.</p>
+<h3>Why it matters</h3>
+<p>It introduces the cast and shows Rama’s character early: obedient, brave and gentle.</p>
+</div></details>
+
+<details><summary><span class="n">2</span><span>Ayodhya Kanda<small>The Book of Ayodhya</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>Dasharatha prepares to crown Rama. Queen Kaikeyi, swayed by her maid Manthara, claims two boons the king once promised her: Bharata to be king, and Rama exiled for fourteen years. Bound by his word, Dasharatha is heartbroken. Rama accepts at once. Sita and Lakshmana insist on going with him. Dasharatha dies of grief. Bharata refuses the throne, finds Rama in the forest, and rules as his regent, placing Rama’s sandals on the throne.</p>
+<h3>Why it matters</h3>
+<p>This is the emotional heart of the epic: promises, family loyalty and sacrifice. It also contains the tragic story of Shravana (see the lesser-known facts below).</p>
+</div></details>
+
+<details><summary><span class="n">3</span><span>Aranya Kanda<small>The Book of the Forest</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>Rama, Sita and Lakshmana live in the Dandaka forest, meeting sages and protecting them from demons. Shurpanakha, Ravana’s sister, is rejected by Rama and Lakshmana and is humiliated. Ravana, seeking revenge, sends Maricha as a golden deer. Rama chases it, a false cry for help is heard, and Lakshmana leaves Sita to follow. Ravana appears as an ascetic and carries Sita off. The vulture Jatayu fights him and is mortally wounded.</p>
+</div></details>
+
+<details><summary><span class="n">4</span><span>Kishkindha Kanda<small>The Book of the Vanara Kingdom</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>Searching for Sita, Rama meets Hanuman and then Sugriva, an exiled vanara king. They form an alliance: Rama will help Sugriva regain his kingdom from his brother Vali, and Sugriva will help find Sita. After Vali’s fall, Sugriva sends search parties in all directions. Hanuman, with Angada and Jambavan, learns from the vulture Sampati that Sita is held in Lanka.</p>
+</div></details>
+
+<details><summary><span class="n">5</span><span>Sundara Kanda<small>The Book of Beauty</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>Hanuman leaps across the sea, enters Lanka, and finds Sita in the Ashoka grove, guarded and steadfast. He gives her Rama’s ring, and she sends back a jewel as a token. He is captured, his tail is set on fire, and he uses it to burn much of Lanka before returning with the news.</p>
+<h3>Why it matters</h3>
+<p>Hanuman’s courage and devotion make this a favourite chapter, and many people recite it for strength in hard times.</p>
+</div></details>
+
+<details><summary><span class="n">6</span><span>Yuddha Kanda<small>The Book of War</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>The vanara army builds a bridge to Lanka. Ravana’s brother Vibhishana, urging peace, joins Rama. In the great war, Lakshmana is struck down and revived by herbs Hanuman brings. Ravana’s son Indrajit and brother Kumbhakarna fall, and finally Rama defeats Ravana. Sita is reunited with Rama and, as the text tells it, proves her purity by passing through fire. They return to Ayodhya after fourteen years, and Rama is crowned.</p>
+</div></details>
+
+<details><summary><span class="n">7</span><span>Uttara Kanda<small>The Book of the Aftermath</small></span></summary><div class="body">
+<h3>The story</h3>
+<p>This final book looks back at Ravana’s origins and covers Rama’s reign, Sita’s later exile, the birth of her twin sons Lava and Kusha at Valmiki’s ashram, and Rama’s departure from the world.</p>
+<h3>A note</h3>
+<p>Many scholars regard this book as a later addition, and it remains the most debated part of the epic, especially its treatment of Sita.</p>
+</div></details>
+</section>
+
+<section id="people">
+<p class="eb">Who’s who</p><h2>Key <i>Characters</i></h2>
+<p class="lead">Who’s who in the epic.</p>
+<div class="cards">
+<div class="card"><h3>Rama</h3><p>Prince of Ayodhya, honoured as <i>Maryada Purushottam</i>, the ideal of right conduct. Regarded as an avatar of Vishnu.</p></div>
+<div class="card"><h3>Sita</h3><p>Princess of Mithila, Rama’s wife. Known for courage, resolve and dignity.</p></div>
+<div class="card"><h3>Lakshmana</h3><p>Rama’s younger brother, fiercely loyal, who shares the whole exile.</p></div>
+<div class="card"><h3>Hanuman</h3><p>The mighty vanara devotee of Rama, a symbol of strength and service.</p></div>
+<div class="card"><h3>Ravana</h3><p>Learned and powerful king of Lanka, undone by pride and desire.</p></div>
+<div class="card"><h3>Bharata</h3><p>Rama’s brother who refuses the throne he was given and governs in Rama’s name.</p></div>
+<div class="card"><h3>Dasharatha</h3><p>King of Ayodhya and father of the four princes.</p></div>
+<div class="card"><h3>Kaikeyi</h3><p>Dasharatha’s queen whose two boons set the exile in motion.</p></div>
+<div class="card"><h3>Vibhishana</h3><p>Ravana’s righteous brother, who sides with Rama.</p></div>
+</div>
+</section>
+
+<section id="versions">
+<p class="eb">One story, many voices</p><h2>Many <i>Ramayanas</i></h2>
+<p class="lead">The story travelled far and changed as it went.</p>
+<div class="cards">
+<div class="card"><h3>Valmiki Ramayana</h3><p>The original Sanskrit epic.</p></div>
+<div class="card"><h3>Ramcharitmanas</h3><p>Tulsidas’s Awadhi retelling, hugely popular in North India.</p></div>
+<div class="card"><h3>Kamban’s Ramavataram</h3><p>A Tamil classic from South India.</p></div>
+<div class="card"><h3>Bhanubhakta Ramayana</h3><p>The first major Nepali-language Ramayana, a landmark in Nepali literature.</p></div>
+<div class="card"><h3>Ramakien</h3><p>The Thai national epic, based on the Ramayana.</p></div>
+<div class="card"><h3>Jain and Buddhist tellings</h3><p>Versions that reinterpret the characters through their own traditions.</p></div>
+</div>
+</section>
+
+<section id="facts">
+<p class="eb">From the text</p><h2>Lesser-known <i>facts</i></h2>
+<p class="lead">Details from the text that often get overlooked. Summarised from <a href="https://sanatanadhara.com/some-lesser-known-facts-about-ramayana/" target="_blank" rel="noopener">“Some lesser known facts about Ramayana”</a> on Sanatana Dhara.</p>
+
+<div class="fact"><h3>Sita was no passive bystander</h3>
+<p>The source stresses that Sita is a strong, outspoken figure. She insisted on joining Rama in exile, urged Lakshmana to go after Rama when she heard the false cry, and after the war answered Rama’s words with the fire ordeal on her own terms.</p><span class="tag">Sita’s character</span></div>
+
+<div class="fact"><h3>Rama’s many roles</h3>
+<p>The article argues that Rama should be seen as son, brother, king and husband, not just as Sita’s husband, and that confusion arises when we mix these roles. It also points to Rama’s deep grief when Sita was taken: weeping, collapsing and calling her name before the vanaras.</p><span class="tag">Rama and Sita</span></div>
+
+<div class="fact"><h3>Rama and Sita as equals</h3>
+<p>The author quotes Swami Vivekananda, who describes Rama as the Absolute and Sita as its Power. In his retelling, Sita says that at their wedding fire she felt she belonged to Rama and he to her, each completing the other’s life.</p><span class="tag">Partnership</span></div>
+
+<div class="fact"><h3>Women with real roles</h3>
+<p>According to the source, Kaikeyi fought beside Dasharatha in battle, Kausalya performed the morning fire ritual (Agnihotra), and Sita carried out daily religious duties. It also claims that Vashishtha suggested Sita could stay and rule instead of going to the forest. This last point is the author’s claim, so check it against the Sanskrit text.</p><span class="tag">Women in the epic</span></div>
+
+<div class="fact"><h3>Everyone invited to the Ashvamedha</h3>
+<p>The article cites verses describing the horse sacrifice, where people of all four varnas were invited and told to be treated with respect.</p><span class="tag">Society</span></div>
+
+<div class="fact"><h3>The sage-boy Shravana</h3>
+<p>The youth accidentally killed by Dasharatha is described as a hermit in bark clothing and deerskin, devoted to study and austerity. By his own words (Ayodhya Kanda 2.63.53) his father was a Vaishya and his mother a Shudra. The source highlights that Valmiki mentions this in passing, as nothing unusual.</p><span class="tag">Ayodhya Kanda 2.63–64</span></div>
+
+<div class="fact"><h3>A curse without Brahmahatya</h3>
+<p>Shravana’s father tells Dasharatha that, because the killing was unknowing, he would not bear the sin of killing a Brahmin. The source reads this as showing that spiritual worth rests on conduct rather than birth. It adds that Shravana was said to ascend to heaven alongside Indra.</p><span class="tag">Karma over birth</span></div>
+
+<div class="fact"><h3>Rama’s respect for others’ mothers</h3>
+<p>The article quotes Sita praising Rama as someone who treats every woman Dasharatha has even glanced upon as his own mother.</p><span class="tag">Character</span></div>
+
+<div class="note"><b>A note on the source:</b> that page is an opinionated blog post, and it argues against some modern criticisms of the epic. Treat its readings as one perspective. For serious study, read a reliable translation of Valmiki alongside scholarly commentary.</div>
+</section>
+</div>
+
+<footer>Jai Siya Ram 🙏<br>Facts summarised from <a href="https://sanatanadhara.com/some-lesser-known-facts-about-ramayana/" target="_blank" rel="noopener">Sanatana Dhara</a> and general knowledge of the epic.</footer>
+<script>
+(function(){var s=document.getElementById('sun');
+addEventListener('scroll',function(){s.style.transform='translateY('+Math.min(scrollY*.3,160)+'px)'},{passive:true});
+var els=document.querySelectorAll('.card,.fact,details,.stat,.note');
+if(!('IntersectionObserver' in window))return;
+var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.1});
+els.forEach(function(el){el.classList.add('rv');io.observe(el)});})();
+</script><script>(function(){var b=document.getElementById("bar");function u(){var m=document.documentElement.scrollHeight-innerHeight;b.style.transform="scaleX("+(m>0?Math.min(scrollY/m,1):0)+")"}addEventListener("scroll",u,{passive:true});addEventListener("resize",u);u()})();</script></body>
+</html>
