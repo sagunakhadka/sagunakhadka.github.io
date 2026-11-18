@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sacred Archives | Interactive Book Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Cinzel Decorative"', 'serif'],
+                        cinzel: ['"Cinzel"', 'serif'],
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --ambient-color: rgba(212, 175, 55, 0.14);
+            --ambient-secondary: rgba(30, 58, 138, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: #08070a;
+            color: #f4efe6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Dynamic Ambient Glow Background */
+        .ambient-backdrop {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 50% 35%, var(--ambient-color) 0%, transparent 55%),
+                radial-gradient(circle at 50% 75%, var(--ambient-secondary) 0%, transparent 65%),
+                radial-gradient(ellipse at 50% 100%, rgba(12, 10, 16, 0.95) 0%, #060508 100%);
+            transition: background 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Subtle Leather / Linen SVG Noise Texture */
+        .texture-overlay {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 0);
+            background-size: 4px 4px;
+        }
+
+        /* Gold Foil Text Gradient */
+        .gold-foil-text {
+            background: linear-gradient(135deg, #fff6d1 0%, #e5c158 30%, #b38728 65%, #fbf5b7 85%, #aa771c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35);
+        }
+
+        .gold-border-glow {
+            box-shadow: 0 0 25px -5px rgba(229, 193, 88, 0.25), inset 0 0 15px rgba(229, 193, 88, 0.12);
+        }
+
+        /* ==========================================
+           3D HARDCOVER BOOK ENGINE
+           ========================================== */
+        .book-stage {
+            perspective: 1400px;
+            max-width: 100%;
+        }
+
+        .book-wrapper {
+            position: relative;
+            width: 248px;
+            height: 360px;
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+            cursor: pointer;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 640px) {
+            .book-wrapper {
+                width: clamp(200px, 68vw, 236px);
+                height: clamp(295px, 98vw, 342px);
+                transform: rotateY(-12deg) rotateX(4deg);
+            }
+        }
+
+        /* Spotlight Mode Larger Book */
+        .spotlight-active .book-wrapper {
+            width: clamp(210px, 68vw, 296px);
+            height: clamp(310px, 98vw, 430px);
+        }
+
+        @media (hover: hover) {
+            .book-wrapper:hover {
+                transform: translateY(-12px) rotateY(-24deg) rotateX(6deg);
+            }
+
+            .book-wrapper:hover .book-front-door {
+                transform: translateZ(21px) rotateY(-18deg);
+            }
+
+            .book-wrapper:hover .cover-sheen {
+                background-position: 0% 0%;
+            }
+        }
+
+        .book-wrapper.book-open-preview {
+            transform: translateY(-8px) rotateY(-34deg) rotateX(5deg) !important;
+        }
+
+        .book-wrapper.book-open-preview .book-front-door {
+            transform: translateZ(21px) rotateY(-26deg) !important;
+        }
+
+        /* Front Cover (Hinged at Left Spine) */
+        .book-front-door {
+            position: absolute;
+            inset: 0;
+            transform-style: preserve-3d;
+            transform-origin: left center;
+            transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s ease;
+            z-index: 20;
+            transform: translateZ(21px);
+            border-radius: 3px 10px 10px 3px;
+        }
+
+        /* Inside Left Endpaper (visible when front cover hinges open) */
+        .book-front-inside {
+            position: absolute;
+            inset: 0;
+            transform: rotateY(180deg) translateZ(1px);
+            backface-visibility: hidden;
+            border-radius: 10px 3px 3px 10px;
+            background: linear-gradient(135deg, #211c15 0%, #14110d 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* Spine Crease Indentation */
+        .spine-groove {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 14px;
+            width: 5px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(255,255,255,0.12) 60%, rgba(0,0,0,0.3) 100%);
+            z-index: 25;
+            pointer-events: none;
+        }
+
+        /* 3D Book Spine (Left Face) */
+        .book-spine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 42px;
+            height: 100%;
+            transform: rotateY(-90deg) translateZ(21px);
+            transform-origin: center center;
+            border-radius: 4px 0 0 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 4px;
+            box-shadow: inset 8px 0 16px rgba(255,255,255,0.12), inset -8px 0 18px rgba(0,0,0,0.75);
+        }
+
+        /*Raised Hub Ridges on Spine */
+        .spine-ridge {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(180deg, rgba(255,235,160,0.5) 0%, rgba(0,0,0,0.75) 100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        /* Back Hardcover */
+        .book-back-cover {
+            position: absolute;
+            inset: 0;
+            transform: translateZ(-21px);
+            border-radius: 3px 10px 10px 3px;
+            box-shadow: -20px 28px 38px rgba(0, 0, 0, 0.85), 0 0 15px rgba(0,0,0,0.6);
+        }
+
+        /* 3D Paper Page Block (Inner Base visible when cover cracks open) */
+        .book-inner-page {
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            left: 4px;
+            right: 6px;
+            transform: translateZ(19px);
+            background: linear-gradient(90deg, #cfc5b2 0%, #f5efe2 12%, #efe6d5 92%, #dfd3bd 100%);
+            border-radius: 2px 7px 7px 2px;
+            box-shadow: inset 12px 0 18px rgba(0,0,0,0.28);
+            padding: 20px 18px 20px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #2b2319;
+            overflow: hidden;
+        }
+
+        /* Right Paper Page Edges (Thick gilded paper block) */
+        .book-pages-right {
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            right: -15px;
+            width: 38px;
+            transform: rotateY(90deg);
+            background: repeating-linear-gradient(
+                90deg,
+                #e6dcc8 0px,
+                #e6dcc8 1.5px,
+                #c9bca3 1.5px,
+                #f5eedc 3px
+            );
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.35);
+        }
+
+        /* Top & Bottom Paper Edges */
+        .book-pages-top {
+            position: absolute;
+            top: -14px;
+            left: 4px;
+            right: 5px;
+            height: 38px;
+            transform: rotateX(90deg);
+            background: repeating-linear-gradient(
+                0deg,
+                #e4dac6 0px,
+                #e4dac6 1.5px,
+                #c5b89f 1.5px,
+                #f2ebd9 3px
+            );
+        }
+
+        .book-pages-bottom {
+            position: absolute;
+            bottom: -14px;
+            left: 4px;
+            right: 5px;
+            height: 38px;
+            transform: rotateX(-90deg);
+            background: repeating-linear-gradient(
+                0deg,
+                #d6ccb8 0px,
+                #d6ccb8 1.5px,
+                #b8ab92 1.5px,
+                #e8e0ce 3px
+            );
+        }
+
+        /* Glare / Foil Specular Sheen */
+        .cover-sheen {
+            position: absolute;
+            inset: 0;
+            border-radius: 3px 10px 10px 3px;
+            background: linear-gradient(
+                115deg,
+                transparent 20%,
+                rgba(255, 243, 196, 0.14) 45%,
+                rgba(255, 255, 255, 0.24) 50%,
+                rgba(255, 243, 196, 0.12) 55%,
+                transparent 80%
+            );
+            background-size: 250% 250%;
+            background-position: 100% 100%;
+            transition: background-position 0.7s ease, opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        /* Wooden / Obsidian Library Shelf Pedestal */
+        .library-pedestal {
+            background: linear-gradient(180deg, rgba(28, 23, 20, 0.85) 0%, rgba(14, 11, 10, 0.96) 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.8), 0 20px 50px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Spin Animations for Celestial Mandalas */
+        @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .book-wrapper:hover .mandala-spin {
+            animation: slowRotate 28s linear infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08070a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3020;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+    <!-- Ambient Shifting Color Backdrop -->
+    <div id="ambientBackdrop" class="ambient-backdrop"></div>
+
+    <!-- Floating Golden Dust Canvas -->
+    <canvas id="dustCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Main Content Wrapper -->
+    <div class="relative z-10 min-h-screen flex flex-col justify-start pb-12">
+
+        <!-- Top Navigation & View Switcher -->
+        <header class="w-full max-w-7xl mx-auto px-4 sm:px-8 pt-4 sm:pt-6 pb-4 flex flex-col md:flex-row items-center justify-between gap-3.5 border-b border-amber-500/15">
+            <div class="flex items-center gap-3 text-center sm:text-left">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-amber-400/50 bg-amber-950/40 flex items-center justify-center shadow-lg shadow-amber-500/10">
+                    <!-- Sacred Lotus/Star Emblem -->
+                    <svg class="w-5 h-5 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                        <path d="M12 2L14.8 8.5L22 9.3L16.5 14L18.2 21L12 17.3L5.8 21L7.5 14L2 9.3L9.2 8.5L12 2Z"/>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <span class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.35em] text-amber-400/80 block font-cinzel">Saguna Khadka • Digital Scriptorium</span>
+                    <h1 class="font-display text-lg sm:text-2xl font-bold tracking-wider gold-foil-text">The Sacred Anthology</h1>
+                </div>
+            </div>
+
+            <!-- View Mode Controls & Quick Launch Bar -->
+            <div class="flex flex-wrap items-center justify-center gap-2 w-full md:w-auto">
+                <div class="inline-flex rounded-full p-1 bg-zinc-900/90 border border-amber-500/25 backdrop-blur-md">
+                    <button id="btnShelfView" onclick="switchViewMode('shelf')" class="px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-medium tracking-wider uppercase transition-all bg-gradient-to-r from-amber-600/80 to-yellow-600/80 text-white shadow">
+                        Gallery Shelf (4)
+                    </button>
+                    <button id="btnSpotlightView" onclick="switchViewMode('spotlight')" class="px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-medium tracking-wider uppercase transition-all text-amber-200/70 hover:text-amber-100">
+                        3D Inspector
+                    </button>
+                </div>
+
+                <!-- Click Action Behaviour Toggle -->
+                <button id="clickBehaviorBtn" onclick="toggleDirectLaunchMode()" title="Choose whether clicking a book cover immediately opens the website or previews the inside spread first" class="px-3.5 py-2 rounded-full text-[11px] sm:text-xs font-medium bg-zinc-900/80 border border-amber-500/25 text-amber-200/90 hover:border-amber-400/60 transition flex items-center gap-2">
+                    <span id="launchModeDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="launchModeText">Cover Click: Direct Launch ↗</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Hero Subtitle Section -->
+        <section class="text-center max-w-3xl mx-auto px-4 pt-4 sm:pt-6 pb-2">
+            <p class="font-serif italic text-base sm:text-xl text-amber-100/80 leading-relaxed">
+                “Four timeless pillars of wisdom, bound in interactive gold-leaf editions. Tap or hover to inspect each volume, read its manuscript, or enter its live portal.”
+            </p>
+        </section>
+
+        <!-- ==========================================
+             VIEW MODE 1: GALLERY SHELF VIEW (4 BOOKS)
+             ========================================== -->
+        <main id="shelfViewContainer" class="w-full max-w-7xl mx-auto px-4 sm:px-8 py-6 sm:py-8 flex-1 flex flex-col justify-center">
+            
+            <!-- Books Grid -->
+            <div id="booksGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 sm:gap-y-14 gap-x-6 sm:gap-x-8 justify-items-center items-end pb-4 sm:pb-6">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Floating Dark Walnut & Gold Inlay Library Pedestal -->
+            <div class="library-pedestal h-6 w-full max-w-6xl mx-auto rounded-t-xl rounded-b-md relative hidden lg:flex items-center justify-around px-12">
+                <div class="w-24 h-1 bg-amber-500/30 rounded-full"></div>
+                <div class="w-24 h-1 bg-amber-500/30 rounded-full"></div>
+                <div class="w-24 h-1 bg-amber-500/30 rounded-full"></div>
+                <div class="w-24 h-1 bg-amber-500/30 rounded-full"></div>
+            </div>
+        </main>
+
+        <!-- ==========================================
+             VIEW MODE 2: 3D SPOTLIGHT INSPECTOR VIEW
+             ========================================== -->
+        <section id="spotlightViewContainer" class="hidden w-full max-w-6xl mx-auto px-3 sm:px-8 py-4 sm:py-8 flex-1">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center bg-zinc-950/70 border border-amber-500/20 rounded-2xl sm:rounded-3xl p-4 sm:p-8 lg:p-10 backdrop-blur-xl gold-border-glow">
+                
+                <!-- Left Column: Interactive 360 Rotatable Book Stage -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center w-full overflow-hidden">
+                    <div id="spotlightBookStage" class="book-stage spotlight-active py-4 sm:py-6 flex items-center justify-center w-full">
+                        <!-- Spotlight 3D Book Injected Here -->
+                    </div>
+
+                    <!-- Interactive Rotation Slider & Flip Controls -->
+                    <div class="w-full max-w-xs mt-2 sm:mt-4 space-y-3 bg-zinc-900/90 p-3.5 sm:p-4 rounded-2xl border border-amber-500/20">
+                        <div class="flex justify-between items-center text-xs text-amber-200/80 font-cinzel">
+                            <span>3D Rotation Angle</span>
+                            <span id="rotationDegreeLabel">-22°</span>
+                        </div>
+                        <input id="spotlightRotationSlider" type="range" min="-160" max="45" value="-22" class="w-full accent-amber-500 cursor-pointer h-2 bg-zinc-800 rounded-lg">
+                        <div class="flex items-center justify-between gap-2 pt-1">
+                            <button onclick="setSpotlightAngle(-85)" class="flex-1 py-2 text-[11px] uppercase tracking-wider bg-zinc-800 hover:bg-zinc-700 text-amber-200 rounded-lg transition">
+                                Spine
+                            </button>
+                            <button onclick="setSpotlightAngle(-20)" class="flex-1 py-2 text-[11px] uppercase tracking-wider bg-zinc-800 hover:bg-zinc-700 text-amber-200 rounded-lg transition">
+                                Cover
+                            </button>
+                            <button onclick="toggleSpotlightCoverOpen()" class="flex-1 py-2 text-[11px] uppercase tracking-wider bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 rounded-lg transition">
+                                Peek Inside
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Detailed Volume Metadata & Direct Launch -->
+                <div class="lg:col-span-7 space-y-5 sm:space-y-6">
+                    <!-- Volume Selector Pills -->
+                    <div id="spotlightTabs" class="flex flex-wrap gap-2 border-b border-amber-500/15 pb-3.5">
+                        <!-- Populated via JS -->
+                    </div>
+
+                    <div id="spotlightDetails">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ==========================================
+         OPEN 2-PAGE SPREAD SYNOPSIS & CUSTOMIZER MODAL
+         ========================================== -->
+    <div id="spreadModal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto">
+        <div class="relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl border border-amber-500/40 bg-[#1a1510] text-[#261f16] transition-all my-auto">
+            
+            <!-- Top Close Bar -->
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3 bg-[#120e0a] border-b border-amber-500/20 text-amber-200 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <span id="modalSpineBadge" class="px-2.5 py-0.5 text-[11px] font-cinzel tracking-widest uppercase bg-amber-500/20 border border-amber-400/40 rounded text-amber-300">VOL I</span>
+                    <span class="text-xs text-amber-200/70 font-serif italic">Illuminated Manuscript Preview</span>
+                </div>
+                <button onclick="closeSpreadModal()" class="p-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-amber-200/80 hover:text-white transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Open 2-Page Parchment Spread (Scrollable on Mobile) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 bg-[#f3ead8] relative overflow-y-auto">
+                <!-- Center Spine Shadow Crease -->
+                <div class="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-10 bg-gradient-to-r from-transparent via-black/25 to-transparent pointer-events-none z-10"></div>
+
+                <!-- Left Page: Illumination Artwork & Quote -->
+                <div class="p-5 sm:p-10 border-b md:border-b-0 md:border-r border-[#d7c9ae] flex flex-col justify-between items-center text-center relative">
+                    <div class="w-full border-2 border-[#c2ab7f] p-4 sm:p-5 rounded-lg flex flex-col items-center justify-between h-full bg-[#efe4ce]/60">
+                        <span id="modalSanskritHeader" class="text-xs uppercase tracking-[0.25em] text-[#7a5c29] font-cinzel font-semibold">Eternal Wisdom</span>
+                        
+                        <!-- Dynamic SVG Ornament Container -->
+                        <div id="modalArtworkContainer" class="w-28 h-28 sm:w-36 sm:h-36 my-3 sm:my-4 flex items-center justify-center text-[#8c6520]"></div>
+
+                        <blockquote id="modalQuote" class="font-serif italic text-base sm:text-lg text-[#382b19] leading-snug max-w-xs">
+                        </blockquote>
+
+                        <div class="mt-4 pt-3 border-t border-[#c2ab7f]/60 w-full flex items-center justify-between text-[10px] sm:text-[11px] text-[#6e562f] font-cinzel">
+                            <span>FOLIO EDITION</span>
+                            <span id="modalUrlShort">sagunakhadka.github.io/bg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Page: Synopsis, Custom Cover Inscription & Portal Launch -->
+                <div class="p-5 sm:p-10 flex flex-col justify-between bg-[#f6efe0]">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-cinzel uppercase tracking-widest text-[#8a6626]">Codex Overview</span>
+                            <span class="text-xs font-serif italic text-[#6d5839]">Page I of I</span>
+                        </div>
+                        <h2 id="modalTitle" class="font-display text-xl sm:text-3xl font-bold text-[#1f170d] mt-1"></h2>
+                        <p id="modalSubtitle" class="font-serif italic text-sm sm:text-base text-[#6e5225] mb-3 sm:mb-4"></p>
+
+                        <p id="modalDescription" class="font-serif text-base sm:text-lg text-[#2e2418] leading-relaxed mb-4 sm:mb-5"></p>
+
+                        <!-- Key Themes Pills -->
+                        <div id="modalThemes" class="flex flex-wrap gap-1.5 mb-5 sm:mb-6"></div>
+
+                        <!-- Interactive Cover Title Customizer -->
+                        <div class="p-3.5 rounded-xl bg-[#ebe0c9] border border-[#cbb78e] space-y-2">
+                            <div class="text-[11px] font-cinzel uppercase tracking-wider text-[#5c451d] font-semibold">
+                                Customize Cover Inscription (Live Preview)
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <input id="customTitleInput" type="text" placeholder="Cover Title" class="px-2.5 py-1.5 text-xs rounded bg-[#f9f4e8] border border-[#bfa77a] text-[#241b10] focus:outline-none focus:border-[#8c6520]">
+                                <input id="customSubtitleInput" type="text" placeholder="Cover Subtitle" class="px-2.5 py-1.5 text-xs rounded bg-[#f9f4e8] border border-[#bfa77a] text-[#241b10] focus:outline-none focus:border-[#8c6520]">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Primary Portal Action Buttons -->
+                    <div class="mt-6 pt-4 border-t border-[#d8cbb0] flex flex-col sm:flex-row items-center gap-3">
+                        <a id="modalLaunchLink" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:flex-1 py-3 px-5 rounded-xl bg-gradient-to-r from-[#8f6518] via-[#b5892e] to-[#8f6518] text-white font-cinzel text-xs uppercase tracking-widest font-bold text-center shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2">
+                            <span>Enter Live Website Portal</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                        <button onclick="navigateSameTabFromModal()" class="w-full sm:w-auto py-3 px-4 rounded-xl border border-[#8f6518] text-[#5e4210] hover:bg-[#e5d8bd] font-cinzel text-xs uppercase tracking-wider font-semibold transition">
+                            Open Here
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        /* ==========================================
+           SACRED VOLUMES DATA & INTRICATE SVG ART
+           ========================================== */
+        const BOOKS_DATA = [
+            {
+                id: 'bg',
+                url: 'https://sagunakhadka.github.io/bg',
+                shortUrl: 'sagunakhadka.github.io/bg',
+                spineCode: 'BG • I',
+                volumeNum: 'VOLUME I',
+                title: 'Bhagavad Gita',
+                subtitle: 'The Song of the Divine • Eternal Wisdom',
+                sanskritMotto: 'योगः कर्मसु कौशलम्',
+                coverGradient: 'linear-gradient(145deg, #0b1938 0%, #070e22 55%, #030712 100%)',
+                spineGradient: 'linear-gradient(180deg, #0a1736 0%, #050b1c 100%)',
+                accentHex: '#60a5fa',
+                ambientPrimary: 'rgba(37, 99, 235, 0.22)',
+                ambientSecondary: 'rgba(212, 175, 55, 0.16)',
+                quote: '“You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions.”',
+                description: 'Set upon the sacred battlefield of Kurukshetra, the Bhagavad Gita is a timeless 700-verse philosophical dialogue between Prince Arjuna and Lord Krishna—unveiling the synthesis of Karma Yoga, Bhakti, and supreme self-realization.',
+                themes: ['Dharma & Duty', 'Karma Yoga', 'Cosmic Form', 'Atman & Brahman'],
+                svgCenterpiece: `
+                    <svg class="w-36 h-36 mandala-spin" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="88" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        <circle cx="100" cy="100" r="76" stroke="url(#goldGrad)" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="56" stroke="url(#goldGrad)" stroke-width="1.2"/>
+                        <!-- 12 Spokes of the Dharma / Sudarshana Chakra -->
+                        <g stroke="url(#goldGrad)" stroke-width="1.6">
+                            <line x1="100" y1="24" x2="100" y2="176"/>
+                            <line x1="24" y1="100" x2="176" y2="100"/>
+                            <line x1="46" y1="46" x2="154" y2="154"/>
+                            <line x1="154" y1="46" x2="46" y2="154"/>
+                            <line x1="62" y1="34" x2="138" y2="166"/>
+                            <line x1="34" y1="62" x2="166" y2="138"/>
+                            <line x1="138" y1="34" x2="62" y2="166"/>
+                            <line x1="166" y1="62" x2="34" y2="138"/>
+                        </g>
+                        <!-- Outer Sunburst Petals -->
+                        <polygon points="100,10 106,24 94,24" fill="url(#goldGrad)"/>
+                        <polygon points="100,190 106,176 94,176" fill="url(#goldGrad)"/>
+                        <polygon points="10,100 24,106 24,94" fill="url(#goldGrad)"/>
+                        <polygon points="190,100 176,106 176,94" fill="url(#goldGrad)"/>
+                        <!-- Inner Sacred Star -->
+                        <polygon points="100,48 114,82 150,82 121,104 132,140 100,118 68,140 79,104 50,82 86,82" stroke="url(#goldGrad)" stroke-width="1.8" fill="rgba(212,175,55,0.12)"/>
+                        <circle cx="100" cy="100" r="16" fill="#071026" stroke="url(#goldGrad)" stroke-width="2.5"/>
+                        <circle cx="100" cy="100" r="6" fill="url(#goldGrad)"/>
+                    </svg>
+                `
+            },
+            {
+                id: 'rmy',
+                url: 'https://sagunakhadka.github.io/rmy',
+                shortUrl: 'sagunakhadka.github.io/rmy',
+                spineCode: 'RMY • II',
+                volumeNum: 'VOLUME II',
+                title: 'Ramayana',
+                subtitle: 'The Epic Journey of Dharma & Devotion',
+                sanskritMotto: 'रामो विग्रहवान् धर्मः',
+                coverGradient: 'linear-gradient(145deg, #4f1212 0%, #2c0808 55%, #170304 100%)',
+                spineGradient: 'linear-gradient(180deg, #420f0f 0%, #1f0506 100%)',
+                accentHex: '#f87171',
+                ambientPrimary: 'rgba(185, 28, 28, 0.24)',
+                ambientSecondary: 'rgba(234, 88, 12, 0.16)',
+                quote: '“Truth, righteousness, and valor are the eternal ornaments of a noble soul walking the path of Dharma.”',
+                description: 'Composed by Sage Valmiki, the Ramayana chronicles the royal exile, unwavering devotion, and heroic odyssey of Sri Rama, Sita, Lakshmana, and Hanuman—illuminating the ideals of honor, kinship, and cosmic justice.',
+                themes: ['Surya Vamsha', 'Kodanda Bow', 'Bhakti & Loyalty', 'Triumph of Light'],
+                svgCenterpiece: `
+                    <svg class="w-36 h-36" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sun Dynasty Halo -->
+                        <circle cx="100" cy="100" r="84" stroke="url(#goldGrad)" stroke-width="1.3" stroke-dasharray="6 3"/>
+                        <circle cx="100" cy="100" r="68" stroke="url(#goldGrad)" stroke-width="1.5"/>
+                        <!-- Radiant Solar Rays -->
+                        <path d="M100 18 L104 32 L96 32 Z M100 182 L104 168 L96 168 Z M18 100 L32 104 L32 96 Z M182 100 L168 104 L168 96 Z" fill="url(#goldGrad)"/>
+                        <!-- Royal Kodanda Bow Curve -->
+                        <path d="M58 40 C128 65, 128 135, 58 160" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M52 46 C116 68, 116 132, 52 154" stroke="url(#goldGrad)" stroke-width="1.4"/>
+                        <!-- Bowstring -->
+                        <line x1="58" y1="40" x2="58" y2="160" stroke="url(#goldGrad)" stroke-width="1.5"/>
+                        <!-- Drawn Celestial Arrow -->
+                        <line x1="35" y1="100" x2="158" y2="100" stroke="url(#goldGrad)" stroke-width="2.6"/>
+                        <polygon points="168,100 146,91 151,100 146,109" fill="url(#goldGrad)"/>
+                        <!-- Arrow Fletching -->
+                        <path d="M35 100 L24 91 L32 91 L41 100 L32 109 L24 109 Z" fill="url(#goldGrad)"/>
+                        <!-- Central Solar Crest -->
+                        <circle cx="96" cy="100" r="14" fill="rgba(212,175,55,0.16)" stroke="url(#goldGrad)" stroke-width="1.8"/>
+                    </svg>
+                `
+            },
+            {
+                id: 'buddha',
+                url: 'https://sagunakhadka.github.io/buddha',
+                shortUrl: 'sagunakhadka.github.io/buddha',
+                spineCode: 'BUDDHA • III',
+                volumeNum: 'VOLUME III',
+                title: 'The Buddha',
+                subtitle: 'The Path of Awakening & Peace',
+                sanskritMotto: 'अप्प दीपो भव',
+                coverGradient: 'linear-gradient(145deg, #0a3628 0%, #062118 55%, #03110c 100%)',
+                spineGradient: 'linear-gradient(180deg, #092e22 0%, #041610 100%)',
+                accentHex: '#34d399',
+                ambientPrimary: 'rgba(16, 185, 129, 0.22)',
+                ambientSecondary: 'rgba(212, 175, 55, 0.15)',
+                quote: '“Peace comes from within. Be a lamp unto yourself, anchored in mindfulness and boundless compassion.”',
+                description: 'Journey from the sacred groves of Lumbini to the Bodhi tree of enlightenment. Explore the life, parables, Four Noble Truths, and Eightfold Path of Siddhartha Gautama, the Awakened One.',
+                themes: ['Lumbini Heritage', 'Bodhi Awakening', 'Eightfold Path', 'Nirvana & Peace'],
+                svgCenterpiece: `
+                    <svg class="w-36 h-36" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="85" stroke="url(#goldGrad)" stroke-width="1.4" stroke-dasharray="3 5"/>
+                        <circle cx="100" cy="100" r="72" stroke="url(#goldGrad)" stroke-width="1.6"/>
+                        <!-- Sacred Bodhi Leaf Outline -->
+                        <path d="M100 26 C138 58, 156 95, 134 134 C120 154, 104 156, 100 172 C96 156, 80 154, 66 134 C44 95, 62 58, 100 26 Z" stroke="url(#goldGrad)" stroke-width="2.2" fill="rgba(212,175,55,0.08)"/>
+                        <!-- Leaf Central Vein -->
+                        <line x1="100" y1="32" x2="100" y2="165" stroke="url(#goldGrad)" stroke-width="1.5"/>
+                        <!-- Blooming Lotus at Base -->
+                        <path d="M100 94 C112 110, 112 132, 100 146 C88 132, 88 110, 100 94 Z" fill="rgba(212,175,55,0.22)" stroke="url(#goldGrad)" stroke-width="1.8"/>
+                        <path d="M100 146 C118 142, 132 124, 128 104 C114 112, 106 126, 100 146 Z" stroke="url(#goldGrad)" stroke-width="1.6"/>
+                        <path d="M100 146 C82 142, 68 124, 72 104 C86 112, 94 126, 100 146 Z" stroke="url(#goldGrad)" stroke-width="1.6"/>
+                        <!-- Dharma Wheel Jewel at Top -->
+                        <circle cx="100" cy="72" r="10" stroke="url(#goldGrad)" stroke-width="1.8" fill="#062118"/>
+                        <circle cx="100" cy="72" r="3.5" fill="url(#goldGrad)"/>
+                    </svg>
+                `
+            },
+            {
+                id: 'mb',
+                url: 'https://sagunakhadka.github.io/mb',
+                shortUrl: 'sagunakhadka.github.io/mb',
+                spineCode: 'MB • IV',
+                volumeNum: 'VOLUME IV',
+                title: 'Mahabharata',
+                subtitle: 'The Great Chronicle of Duty & Destiny',
+                sanskritMotto: 'यतो धर्मस्ततो जयः',
+                coverGradient: 'linear-gradient(145deg, #2b1838 0%, #180d21 55%, #0c0612 100%)',
+                spineGradient: 'linear-gradient(180deg, #241330 0%, #110817 100%)',
+                accentHex: '#c084fc',
+                ambientPrimary: 'rgba(147, 51, 234, 0.20)',
+                ambientSecondary: 'rgba(217, 119, 6, 0.18)',
+                quote: '“Where there is Dharma, there is Victory. Whatever is found here may be found elsewhere; what is not here is nowhere else.”',
+                description: 'The grandest epic poem ever composed in human history. Follow the dynastic struggle of the Pandavas and Kauravas across eighteen monumental Parvas of statecraft, destiny, sacrifice, and spiritual wisdom.',
+                themes: ['18 Parvas', 'Kurukshetra Epic', 'Raja Dharma', 'Cosmic Tapestry'],
+                svgCenterpiece: `
+                    <svg class="w-36 h-36" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 18-Parva Outer Geometric Ring -->
+                        <circle cx="100" cy="100" r="86" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="8 4"/>
+                        <rect x="44" y="44" width="112" height="112" stroke="url(#goldGrad)" stroke-width="1.5" transform="rotate(45 100 100)"/>
+                        <rect x="44" y="44" width="112" height="112" stroke="url(#goldGrad)" stroke-width="1.5"/>
+                        <!-- Royal Chariot Banner & Panchajanya Crest -->
+                        <circle cx="100" cy="100" r="46" stroke="url(#goldGrad)" stroke-width="2" fill="rgba(212,175,55,0.1)"/>
+                        <!-- Celestial Diamond Star -->
+                        <path d="M100 56 L112 88 L144 100 L112 112 L100 144 L88 112 L56 100 L88 88 Z" stroke="url(#goldGrad)" stroke-width="2" fill="rgba(212,175,55,0.18)"/>
+                        <circle cx="100" cy="100" r="10" fill="#180d21" stroke="url(#goldGrad)" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="4" fill="url(#goldGrad)"/>
+                    </svg>
+                `
+            }
+        ];
+
+        // Global State
+        let directLaunchOnCoverClick = true; // Clicking cover immediately opens target URL
+        let currentViewMode = 'shelf';
+        let activeSpotlightBookId = 'bg';
+        let activeModalBookId = null;
+        let isSpotlightCoverPeeking = false;
+
+        // Shared SVG Gradient Definition for Gold Foil
+        const GOLD_SVG_DEFS = `
+            <svg width="0" height="0" class="absolute">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fff4cc" />
+                        <stop offset="35%" stop-color="#e5c158" />
+                        <stop offset="70%" stop-color="#b38728" />
+                        <stop offset="100%" stop-color="#fdf0a6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        `;
+        document.body.insertAdjacentHTML('afterbegin', GOLD_SVG_DEFS);
+
+        /* ==========================================
+           GENERATE 3D BOOK HTML COMPONENT
+           ========================================== */
+        function create3DBookHTML(book, isSpotlight = false) {
+            const cornerOrnament = `
+                <svg class="w-6 h-6 text-amber-300/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M2 12V2H12M2 2L9 9"/>
+                </svg>
+            `;
+
+            return `
+                <div class="flex flex-col items-center group">
+                    <!-- 3D Book Stage -->
+                    <div class="book-stage py-2"
+                         onmouseenter="updateAmbientLighting('${book.id}')"
+                         onmousemove="handleBookTilt(event, this)"
+                         onmouseleave="resetBookTilt(this)">
+                        
+                        <div class="book-wrapper" id="${isSpotlight ? 'spotlightBook3D' : 'book-' + book.id}"
+                             onclick="handleBookCoverClick(event, '${book.id}')">
+
+                            <!-- 1. HINGED FRONT HARDCOVER -->
+                            <div class="book-front-door" style="background: ${book.coverGradient};">
+                                <!-- Textured Leather Overlay -->
+                                <div class="absolute inset-0 texture-overlay rounded-[3px_10px_10px_3px] pointer-events-none"></div>
+                                <!-- Spine Indentation Groove -->
+                                <div class="spine-groove"></div>
+                                <!-- Specular Foil Glare Sheen -->
+                                <div class="cover-sheen"></div>
+
+                                <!-- Gold Foil Frame & Corner Filigree -->
+                                <div class="relative z-10 h-full w-full p-4 pl-6 flex flex-col justify-between border border-amber-400/40 rounded-[3px_10px_10px_3px] shadow-inner">
+                                    
+                                    <!-- Inner Gold Double Border -->
+                                    <div class="h-full w-full border border-amber-300/35 rounded-sm p-3.5 flex flex-col justify-between relative">
+                                        
+                                        <!-- 4 Gold Corner Ornaments -->
+                                        <div class="absolute top-1 left-1">${cornerOrnament}</div>
+                                        <div class="absolute top-1 right-1 rotate-90">${cornerOrnament}</div>
+                                        <div class="absolute bottom-1 left-1 -rotate-90">${cornerOrnament}</div>
+                                        <div class="absolute bottom-1 right-1 rotate-180">${cornerOrnament}</div>
+
+                                        <!-- Top Header: Sanskrit Motto & Volume Number -->
+                                        <div class="text-center pt-1">
+                                            <span class="text-[9px] tracking-[0.28em] uppercase text-amber-300/75 font-cinzel block">${book.volumeNum}</span>
+                                            <span class="text-[11px] text-amber-200/90 font-serif tracking-wider mt-0.5 block">${book.sanskritMotto}</span>
+                                        </div>
+
+                                        <!-- Centerpiece Custom Gold SVG Artwork -->
+                                        <div class="my-auto flex items-center justify-center py-1">
+                                            ${book.svgCenterpiece}
+                                        </div>
+
+                                        <!-- Bottom Embossed Title & Subtitle -->
+                                        <div class="text-center pb-2">
+                                            <div class="w-12 h-[1px] bg-gradient-to-r from-transparent via-amber-400/70 to-transparent mx-auto mb-2"></div>
+                                            <h2 class="book-title-${book.id} font-display text-lg sm:text-xl font-bold tracking-wide gold-foil-text leading-tight">
+                                                ${book.title}
+                                            </h2>
+                                            <p class="book-subtitle-${book.id} font-serif italic text-xs text-amber-100/80 mt-1 line-clamp-1">
+                                                ${book.subtitle}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Inside Left Front Cover (Endpaper when opened) -->
+                                <div class="book-front-inside">
+                                    <div class="border border-amber-500/30 p-3 text-center rounded">
+                                        <p class="font-cinzel text-[10px] tracking-widest text-amber-400 uppercase">Ex Libris</p>
+                                        <p class="font-serif italic text-xs text-amber-100/80 mt-1">Saguna Khadka Digital Collection</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2. INNER FIRST PAGE (Revealed when cover cracks open on hover) -->
+                            <div class="book-inner-page">
+                                <div class="border-b border-amber-900/25 pb-2 flex justify-between items-center">
+                                    <span class="font-cinzel text-[9px] tracking-widest uppercase text-amber-900/80">${book.spineCode}</span>
+                                    <span class="font-serif italic text-[10px] text-amber-900/70">Folio I</span>
+                                </div>
+                                <div class="my-auto py-2">
+                                    <p class="font-serif italic text-xs leading-relaxed text-stone-800 line-clamp-5">
+                                        ${book.quote}
+                                    </p>
+                                </div>
+                                <div class="text-[10px] font-cinzel uppercase tracking-wider text-amber-900 font-bold text-right">
+                                    Click to Open Portal →
+                                </div>
+                            </div>
+
+                            <!-- 3. 3D SPINE -->
+                            <div class="book-spine" style="background: ${book.spineGradient}; border-right: 1px solid rgba(212,175,55,0.35);">
+                                <div class="spine-ridge"></div>
+                                <span class="font-cinzel text-[9px] tracking-widest text-amber-300/90 font-bold">${book.spineCode.split('•')[1] || 'I'}</span>
+                                <div class="spine-ridge"></div>
+                                <div class="py-2 flex items-center justify-center" style="writing-mode: vertical-rl; text-orientation: mixed;">
+                                    <span class="font-display text-xs tracking-[0.22em] uppercase gold-foil-text font-bold whitespace-nowrap">
+                                        ${book.title}
+                                    </span>
+                                </div>
+                                <div class="spine-ridge"></div>
+                                <span class="font-cinzel text-[8px] tracking-widest text-amber-400/80">SK</span>
+                                <div class="spine-ridge"></div>
+                            </div>
+
+                            <!-- 4. GILDED PAPER EDGES (Right, Top, Bottom) -->
+                            <div class="book-pages-right"></div>
+                            <div class="book-pages-top"></div>
+                            <div class="book-pages-bottom"></div>
+
+                            <!-- 5. BACK HARDCOVER -->
+                            <div class="book-back-cover" style="background: ${book.coverGradient};"></div>
+                        </div>
+                    </div>
+
+                    <!-- Under-Book Action Bar (Only in Gallery Shelf View) -->
+                    ${!isSpotlight ? `
+                    <div class="mt-5 flex flex-col items-center w-full max-w-[250px] px-2 sm:px-0 space-y-2">
+                        <div class="flex items-center gap-2 w-full">
+                            <a href="${book.url}" target="_blank" rel="noopener noreferrer"
+                               class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 hover:from-amber-500/35 hover:to-amber-400/40 border border-amber-400/40 text-amber-100 text-xs font-cinzel uppercase tracking-wider font-semibold text-center transition flex items-center justify-center gap-1.5 shadow-md">
+                                <span>Visit Website</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </a>
+                            <button onclick="openSpreadModal('${book.id}')"
+                                    title="Read Synopsis & Customize Cover"
+                                    class="p-2.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border border-amber-500/25 text-amber-300/90 hover:text-amber-200 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <button onclick="window.location.href='${book.url}'" class="py-1 text-[11px] text-amber-200/60 hover:text-amber-300 transition font-serif italic">
+                            or open ${book.shortUrl} in this tab →
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           RENDER GALLERY SHELF & SPOTLIGHT VIEWS
+           ========================================== */
+        function renderAllBooks() {
+            const grid = document.getElementById('booksGrid');
+            grid.innerHTML = BOOKS_DATA.map(book => create3DBookHTML(book, false)).join('');
+            renderSpotlightView(activeSpotlightBookId);
+        }
+
+        function renderSpotlightView(bookId) {
+            activeSpotlightBookId = bookId;
+            const book = BOOKS_DATA.find(b => b.id === bookId) || BOOKS_DATA[0];
+            updateAmbientLighting(book.id);
+
+            // Render Tabs
+            const tabsContainer = document.getElementById('spotlightTabs');
+            tabsContainer.innerHTML = BOOKS_DATA.map(b => `
+                <button onclick="renderSpotlightView('${b.id}')"
+                        class="px-4 py-2 rounded-xl font-cinzel text-xs uppercase tracking-wider transition flex items-center gap-2 ${b.id === bookId ? 'bg-amber-500/25 border border-amber-400 text-amber-100 shadow-lg' : 'bg-zinc-900/80 border border-amber-500/20 text-amber-200/60 hover:text-amber-100'}">
+                    <span>${b.spineCode}</span>
+                    <span class="hidden sm:inline">• ${b.title}</span>
+                </button>
+            `).join('');
+
+            // Render 3D Book inside Spotlight Stage
+            const stage = document.getElementById('spotlightBookStage');
+            stage.innerHTML = create3DBookHTML(book, true);
+
+            // Render Detailed Metadata & Direct Launch Buttons
+            const details = document.getElementById('spotlightDetails');
+            details.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-cinzel uppercase tracking-widest bg-amber-500/15 border border-amber-400/30 text-amber-300">
+                            ${book.volumeNum}
+                        </span>
+                        <span class="font-serif italic text-amber-200/80 text-base">${book.sanskritMotto}</span>
+                    </div>
+
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold gold-foil-text">${book.title}</h2>
+                    <p class="font-serif italic text-xl text-amber-100/85">${book.subtitle}</p>
+
+                    <blockquote class="p-4 rounded-xl bg-zinc-900/90 border-l-2 border-amber-400 font-serif italic text-base text-amber-100/90">
+                        ${book.quote}
+                    </blockquote>
+
+                    <p class="text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
+                        ${book.description}
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        ${book.themes.map(t => `<span class="px-3 py-1 rounded-lg bg-zinc-900 border border-amber-500/25 text-xs text-amber-200/90">${t}</span>`).join('')}
+                    </div>
+
+                    <div class="pt-4 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
+                        <a href="${book.url}" target="_blank" rel="noopener noreferrer"
+                           class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-600 hover:brightness-110 text-white font-cinzel text-xs uppercase tracking-widest font-bold shadow-xl transition flex items-center justify-center gap-2">
+                            <span>Launch ${book.title} Portal</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+
+                        <button onclick="window.location.href='${book.url}'"
+                                class="px-5 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-amber-500/35 text-amber-200 font-cinzel text-xs uppercase tracking-wider transition text-center">
+                            Open in Current Tab
+                        </button>
+
+                        <button onclick="openSpreadModal('${book.id}')"
+                                class="px-4 py-3.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800 border border-amber-500/20 text-amber-300/80 text-xs font-cinzel uppercase tracking-wider transition text-center">
+                            Open Manuscript Spread
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Reset slider rotation
+            const slider = document.getElementById('spotlightRotationSlider');
+            if (slider) {
+                slider.value = -22;
+                setSpotlightAngle(-22);
+            }
+        }
+
+        /* ==========================================
+           INTERACTIVE 3D TILT & AMBIENT LIGHTING
+           ========================================== */
+        function handleBookTilt(event, stageContainer) {
+            if (currentViewMode === 'spotlight' || window.innerWidth < 768) return;
+            const wrapper = stageContainer.querySelector('.book-wrapper');
+            if (!wrapper) return;
+
+            const rect = stageContainer.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+            const rotateY = -24 + (x * 26);
+            const rotateX = 6 - (y * 18);
+
+            wrapper.style.transform = `translateY(-12px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+        }
+
+        function resetBookTilt(stageContainer) {
+            if (currentViewMode === 'spotlight') return;
+            const wrapper = stageContainer.querySelector('.book-wrapper');
+            if (!wrapper) return;
+            wrapper.style.transform = '';
+        }
+
+        function updateAmbientLighting(bookId) {
+            const book = BOOKS_DATA.find(b => b.id === bookId);
+            if (!book) return;
+            document.documentElement.style.setProperty('--ambient-color', book.ambientPrimary);
+            document.documentElement.style.setProperty('--ambient-secondary', book.ambientSecondary);
+        }
+
+        /* ==========================================
+           CLICK BEHAVIOR & MODAL SPREAD HANDLERS
+           ========================================== */
+        function toggleDirectLaunchMode() {
+            directLaunchOnCoverClick = !directLaunchOnCoverClick;
+            const dot = document.getElementById('launchModeDot');
+            const text = document.getElementById('launchModeText');
+
+            if (directLaunchOnCoverClick) {
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                text.textContent = 'Cover Click: Direct Launch ↗';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+                text.textContent = 'Cover Click: Preview Inside 📖';
+            }
+        }
+
+        function handleBookCoverClick(event, bookId) {
+            const book = BOOKS_DATA.find(b => b.id === bookId);
+            if (!book) return;
+
+            if (directLaunchOnCoverClick) {
+                // Smoothly swing cover open then navigate
+                const bookEl = event.currentTarget;
+                bookEl.classList.add('book-open-preview');
+                setTimeout(() => {
+                    window.open(book.url, '_blank', 'noopener,noreferrer');
+                    bookEl.classList.remove('book-open-preview');
+                }, 260);
+            } else {
+                openSpreadModal(bookId);
+            }
+        }
+
+        function openSpreadModal(bookId) {
+            activeModalBookId = bookId;
+            const book = BOOKS_DATA.find(b => b.id === bookId);
+            if (!book) return;
+
+            document.getElementById('modalSpineBadge').textContent = book.spineCode;
+            document.getElementById('modalSanskritHeader').textContent = book.sanskritMotto;
+            document.getElementById('modalArtworkContainer').innerHTML = book.svgCenterpiece;
+            document.getElementById('modalQuote').textContent = book.quote;
+            document.getElementById('modalUrlShort').textContent = book.shortUrl;
+            document.getElementById('modalTitle').textContent = book.title;
+            document.getElementById('modalSubtitle').textContent = book.subtitle;
+            document.getElementById('modalDescription').textContent = book.description;
+            document.getElementById('modalLaunchLink').href = book.url;
+
+            document.getElementById('modalThemes').innerHTML = book.themes.map(theme => `
+                <span class="px-2.5 py-1 rounded-md bg-[#e4d6b8] border border-[#c5b086] text-xs font-cinzel text-[#4a3718] font-semibold">
+                    ${theme}
+                </span>
+            `).join('');
+
+            // Populate Customizer Inputs
+            const titleInput = document.getElementById('customTitleInput');
+            const subtitleInput = document.getElementById('customSubtitleInput');
+            titleInput.value = book.title;
+            subtitleInput.value = book.subtitle;
+
+            const modal = document.getElementById('spreadModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeSpreadModal() {
+            const modal = document.getElementById('spreadModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeModalBookId = null;
+        }
+
+        function navigateSameTabFromModal() {
+            const book = BOOKS_DATA.find(b => b.id === activeModalBookId);
+            if (book) {
+                window.location.href = book.url;
+            }
+        }
+
+        // Live Cover Title & Subtitle Customization
+        document.getElementById('customTitleInput').addEventListener('input', (e) => {
+            if (!activeModalBookId) return;
+            const val = e.target.value || 'Untitled Volume';
+            const book = BOOKS_DATA.find(b => b.id === activeModalBookId);
+            if (book) book.title = val;
+            document.getElementById('modalTitle').textContent = val;
+            document.querySelectorAll(`.book-title-${activeModalBookId}`).forEach(el => el.textContent = val);
+        });
+
+        document.getElementById('customSubtitleInput').addEventListener('input', (e) => {
+            if (!activeModalBookId) return;
+            const val = e.target.value || '';
+            const book = BOOKS_DATA.find(b => b.id === activeModalBookId);
+            if (book) book.subtitle = val;
+            document.getElementById('modalSubtitle').textContent = val;
+            document.querySelectorAll(`.book-subtitle-${activeModalBookId}`).forEach(el => el.textContent = val);
+        });
+
+        /* ==========================================
+           VIEW SWITCHER & SPOTLIGHT 3D CONTROLS
+           ========================================== */
+        function switchViewMode(mode) {
+            currentViewMode = mode;
+            const shelfContainer = document.getElementById('shelfViewContainer');
+            const spotlightContainer = document.getElementById('spotlightViewContainer');
+            const btnShelf = document.getElementById('btnShelfView');
+            const btnSpotlight = document.getElementById('btnSpotlightView');
+
+            if (mode === 'shelf') {
+                shelfContainer.classList.remove('hidden');
+                spotlightContainer.classList.add('hidden');
+                btnShelf.className = 'px-4 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all bg-gradient-to-r from-amber-600/80 to-yellow-600/80 text-white shadow';
+                btnSpotlight.className = 'px-4 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all text-amber-200/70 hover:text-amber-100';
+            } else {
+                shelfContainer.classList.add('hidden');
+                spotlightContainer.classList.remove('hidden');
+                btnSpotlight.className = 'px-4 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all bg-gradient-to-r from-amber-600/80 to-yellow-600/80 text-white shadow';
+                btnShelf.className = 'px-4 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all text-amber-200/70 hover:text-amber-100';
+                renderSpotlightView(activeSpotlightBookId);
+            }
+        }
+
+        function setSpotlightAngle(angle) {
+            const bookEl = document.getElementById('spotlightBook3D');
+            const label = document.getElementById('rotationDegreeLabel');
+            const slider = document.getElementById('spotlightRotationSlider');
+            if (bookEl) {
+                bookEl.style.transform = `rotateY(${angle}deg) rotateX(5deg)`;
+            }
+            if (label) label.textContent = `${angle}°`;
+            if (slider) slider.value = angle;
+        }
+
+        function toggleSpotlightCoverOpen() {
+            const bookEl = document.getElementById('spotlightBook3D');
+            if (!bookEl) return;
+            const door = bookEl.querySelector('.book-front-door');
+            isSpotlightCoverPeeking = !isSpotlightCoverPeeking;
+            if (door) {
+                door.style.transform = isSpotlightCoverPeeking
+                    ? 'translateZ(21px) rotateY(-125deg)'
+                    : 'translateZ(21px) rotateY(0deg)';
+            }
+        }
+
+        document.getElementById('spotlightRotationSlider').addEventListener('input', (e) => {
+            setSpotlightAngle(e.target.value);
+        });
+
+        // Close modal on Escape or backdrop click
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSpreadModal();
+        });
+        document.getElementById('spreadModal').addEventListener('click', (e) => {
+            if (e.target.id === 'spreadModal') closeSpreadModal();
+        });
+
+        /* ==========================================
+           FLOATING GOLDEN DUST PARTICLES (CANVAS)
+           ========================================== */
+        function initGoldenDustCanvas() {
+            const canvas = document.getElementById('dustCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            const PARTICLE_COUNT = 55;
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 1.8 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.25,
+                    speedY: -Math.random() * 0.35 - 0.08,
+                    alpha: Math.random() * 0.65 + 0.15,
+                    pulseSpeed: Math.random() * 0.02 + 0.005,
+                    pulsePhase: Math.random() * Math.PI * 2
+                });
+            }
+
+            function animateDust() {
+                ctx.clearRect(0, 0, width, height);
+                for (let p of particles) {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.pulsePhase += p.pulseSpeed;
+
+                    if (p.y < -10) p.y = height + 10;
+                    if (p.x < -10) p.x = width + 10;
+                    if (p.x > width + 10) p.x = -10;
+
+                    const currentAlpha = p.alpha * (0.65 + 0.35 * Math.sin(p.pulsePhase));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(235, 198, 102, ${currentAlpha})`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(animateDust);
+            }
+
+            animateDust();
+        }
+
+        // Initialize on Window Load
+        window.onload = function () {
+            renderAllBooks();
+            initGoldenDustCanvas();
+        };
+    </script>
+</body>
+</html>
